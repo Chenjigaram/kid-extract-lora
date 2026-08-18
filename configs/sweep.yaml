@@ -1,8 +1,8 @@
 mode: axes
 base: configs/base.yaml
 
-train_samples: 1500
-eval_documents: 60
+train_samples: 200
+eval_documents: 40
 eval_split: data/processed/test_unseen_layout.jsonl
 output_dir: runs/sweep
 

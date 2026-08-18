@@ -9,7 +9,7 @@ lora:
   target_modules: [q_proj, k_proj, v_proj, o_proj, gate_proj, up_proj, down_proj]
 
 training:
-  epochs: 2
+  epochs: 1
   learning_rate: 0.00015
   batch_size: 1
   gradient_accumulation_steps: 4
