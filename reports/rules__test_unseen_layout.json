@@ -1,0 +1,176 @@
+{
+  "system": "rules",
+  "split": "test_unseen_layout",
+  "documents": 300,
+  "micro_f1": 0.6835,
+  "macro_f1": 0.4858,
+  "exact_match": 0.0,
+  "schema_validity": 1.0,
+  "hallucination_rate": 0.0,
+  "parse_failures": 0,
+  "schema_failures": 0,
+  "median_latency_seconds": 0.002,
+  "per_field": {
+    "fund_name": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "null_accuracy": 1.0,
+      "support": 300
+    },
+    "isin": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "null_accuracy": 1.0,
+      "support": 279
+    },
+    "currency": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "null_accuracy": 1.0,
+      "support": 249
+    },
+    "sri": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "null_accuracy": 1.0,
+      "support": 300
+    },
+    "srri": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "null_accuracy": 1.0,
+      "support": 0
+    },
+    "ongoing_charges_pct": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "null_accuracy": 1.0,
+      "support": 300
+    },
+    "entry_charge_pct": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "null_accuracy": 1.0,
+      "support": 252
+    },
+    "exit_charge_pct": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "null_accuracy": 1.0,
+      "support": 249
+    },
+    "transaction_costs_pct": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "null_accuracy": 1.0,
+      "support": 273
+    },
+    "performance_fee_pct": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "null_accuracy": 1.0,
+      "support": 134
+    },
+    "recommended_holding_period_years": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "null_accuracy": 1.0,
+      "support": 300
+    },
+    "investment_objective": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "null_accuracy": 1.0,
+      "support": 300
+    },
+    "benchmark": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "null_accuracy": 1.0,
+      "support": 219
+    },
+    "domicile": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "null_accuracy": 1.0,
+      "support": 189
+    },
+    "management_company": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "null_accuracy": 1.0,
+      "support": 243
+    },
+    "scenarios.stress.value": {
+      "precision": 0.9579,
+      "recall": 0.91,
+      "f1": 0.9333,
+      "null_accuracy": 0.0,
+      "support": 300
+    },
+    "scenarios.stress.return_pct": {
+      "precision": 1.0,
+      "recall": 0.95,
+      "f1": 0.9744,
+      "null_accuracy": 1.0,
+      "support": 300
+    },
+    "scenarios.unfavourable.value": {
+      "precision": 0.9713,
+      "recall": 0.9033,
+      "f1": 0.9361,
+      "null_accuracy": 0.0,
+      "support": 300
+    },
+    "scenarios.unfavourable.return_pct": {
+      "precision": 1.0,
+      "recall": 0.93,
+      "f1": 0.9637,
+      "null_accuracy": 1.0,
+      "support": 300
+    },
+    "scenarios.moderate.value": {
+      "precision": 0.9928,
+      "recall": 0.9233,
+      "f1": 0.9568,
+      "null_accuracy": 0.0,
+      "support": 300
+    },
+    "scenarios.moderate.return_pct": {
+      "precision": 1.0,
+      "recall": 0.93,
+      "f1": 0.9637,
+      "null_accuracy": 1.0,
+      "support": 300
+    },
+    "scenarios.favourable.value": {
+      "precision": 0.9965,
+      "recall": 0.96,
+      "f1": 0.9779,
+      "null_accuracy": 0.0,
+      "support": 300
+    },
+    "scenarios.favourable.return_pct": {
+      "precision": 1.0,
+      "recall": 0.9633,
+      "f1": 0.9813,
+      "null_accuracy": 1.0,
+      "support": 300
+    }
+  }
+}
