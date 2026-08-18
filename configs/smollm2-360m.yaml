@@ -1,0 +1,32 @@
+model:
+  name: HuggingFaceTB/SmolLM2-360M-Instruct
+  max_seq_length: 1280
+
+lora:
+  r: 16
+  alpha: 32
+  dropout: 0.05
+  target_modules: [q_proj, k_proj, v_proj, o_proj, gate_proj, up_proj, down_proj]
+
+training:
+  epochs: 2
+  learning_rate: 0.00015
+  batch_size: 1
+  gradient_accumulation_steps: 8
+  warmup_steps: 20
+  weight_decay: 0.0
+  lr_scheduler: cosine
+  logging_steps: 20
+  eval_steps: 200
+  save_steps: 400
+  seed: 42
+
+data:
+  dir: data/processed
+  train_file: train.jsonl
+  validation_file: validation.jsonl
+  max_train_samples: null
+  max_eval_samples: 200
+
+output:
+  dir: runs/smollm2-360m-r16

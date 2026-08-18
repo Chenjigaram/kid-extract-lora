@@ -1,0 +1,18 @@
+mode: axes
+base: configs/base.yaml
+
+train_samples: 1500
+eval_documents: 60
+eval_split: data/processed/test_unseen_layout.jsonl
+output_dir: runs/sweep
+
+axes:
+  lora.r: [4, 8, 16, 32, 64]
+  lora.alpha: [8, 16, 32, 64]
+  lora.dropout: [0.0, 0.05, 0.1]
+  training.learning_rate: [0.00005, 0.0001, 0.0002, 0.0005]
+  training.epochs: [1, 2, 3]
+  lora.target_modules:
+    - [q_proj, v_proj]
+    - [q_proj, k_proj, v_proj, o_proj]
+    - [q_proj, k_proj, v_proj, o_proj, gate_proj, up_proj, down_proj]
