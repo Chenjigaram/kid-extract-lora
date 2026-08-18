@@ -28,7 +28,7 @@ class TrainingConfig:
     epochs: float = 2
     learning_rate: float = 2e-4
     batch_size: int = 1
-    gradient_accumulation_steps: int = 8
+    gradient_accumulation_steps: int = 4
     warmup_steps: int = 20
     weight_decay: float = 0.0
     lr_scheduler: str = "cosine"
