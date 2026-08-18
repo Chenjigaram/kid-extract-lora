@@ -4,7 +4,7 @@ DATA ?= data/processed
 SPLIT ?= $(DATA)/test_unseen_layout.jsonl
 ADAPTER ?= runs/smollm2-135m-r16/adapter
 
-.PHONY: install test lint smoke data rules zero-shot few-shot finetuned train sweep plots report clean
+.PHONY: install test lint smoke data rules zero-shot few-shot finetuned train sweep benchmark plots report clean
 
 install:
 	uv venv --python 3.12 .venv
@@ -40,6 +40,9 @@ finetuned:
 
 sweep:
 	$(PYTHON) -m kidextract.cli.sweep --spec configs/sweep.yaml --threads $(THREADS) --skip-generation --table reports/SWEEP.md
+
+benchmark:
+	PYTHON=$(PYTHON) THREADS=$(THREADS) SPLIT=$(SPLIT) ADAPTER=$(ADAPTER) scripts/benchmark.sh
 
 plots:
 	$(PYTHON) -m kidextract.cli.plot --results runs/sweep/results.json --out reports/figures
