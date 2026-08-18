@@ -11,6 +11,13 @@ from .objectives import objective_text
 
 YEAR_WORD = {"en": "years", "de": "Jahre", "fr": "ans", "nl": "jaar"}
 
+COST_SENTENCE = {
+    "en": "{label} amount to {value}.",
+    "de": "{label} betragen {value}.",
+    "fr": "{label} s'elevent a {value}.",
+    "nl": "{label} bedragen {value}.",
+}
+
 DROPOUT = {
     "isin": 0.05,
     "currency": 0.15,
@@ -167,7 +174,8 @@ def _render_costs(facts: FundFacts, layout: Layout, shown: set[str]) -> list[str
     elif layout.charge_style == "bullets":
         lines += [f"- {label}{layout.key_separator} {value}" for label, value in items]
     else:
-        lines.append(" ".join(f"{label} amount to {value}." for label, value in items))
+        sentence = COST_SENTENCE[layout.language]
+        lines.append(" ".join(sentence.format(label=label, value=value) for label, value in items))
     return lines
 
 
