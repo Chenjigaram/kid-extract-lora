@@ -10,7 +10,7 @@ import yaml
 @dataclass
 class ModelConfig:
     name: str = "HuggingFaceTB/SmolLM2-135M-Instruct"
-    max_seq_length: int = 1280
+    max_seq_length: int = 1408
 
 
 @dataclass

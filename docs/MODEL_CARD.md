@@ -36,7 +36,7 @@ training, and nothing proprietary or confidential was involved.
 | Trainable parameters | 4,884,480 of 139,399,488 (3.5%) |
 | Rank / alpha / dropout | see `configs/base.yaml` |
 | Target modules | `q_proj k_proj v_proj o_proj gate_proj up_proj down_proj` |
-| Max sequence length | 1280 |
+| Max sequence length | 1408 |
 | Loss | completion only; the prompt is masked |
 | Hardware | Intel i5-8365U, 4 cores, CPU only |
 
