@@ -137,6 +137,77 @@ tried. Micro F1 0.000, schema validity 0.000, at 28 seconds per document. That i
 failure mode fine-tuning is supposed to fix, and it is why the comparison table below is
 worth building rather than assuming.
 
+## Results
+
+All systems scored on the same 50 documents, same code, same splits.
+
+### Unseen layouts and unseen label wordings
+
+| System | Micro F1 | Macro F1 | Exact | Schema valid | Hallucination | Latency |
+| --- | --- | --- | --- | --- | --- | --- |
+| **fine-tuned 135M** | **0.858** | **0.830** | 0.02 | 0.88 | 0.005 | 21.3 s |
+| rules | 0.644 | 0.514 | 0.00 | 1.00 | 0.000 | 0.001 s |
+| few-shot 135M | 0.169 | 0.155 | 0.00 | 0.50 | 0.491 | 40.0 s |
+| zero-shot 135M | 0.000 | 0.000 | 0.00 | 0.00 | — | 28.1 s |
+
+### Known layouts and wordings
+
+| System | Micro F1 | Macro F1 | Exact | Schema valid | Latency |
+| --- | --- | --- | --- | --- | --- |
+| fine-tuned 135M | 0.988 | 0.988 | 0.82 | 1.00 | 21.1 s |
+| rules | 0.983 | 0.982 | 0.72 | 1.00 | 0.001 s |
+
+Fine-tuning takes the same 135M model from **producing no valid JSON at all** to 0.858 micro F1
+on documents whose layout and vocabulary it has never seen. Prompting does not get there: the
+base model zero-shot never closed a single object, and few-shot reached only half its outputs
+being parseable while inventing **49% of the values it emitted**. That is the format-and-behaviour
+argument, measured rather than asserted.
+
+### Where each approach wins
+
+The per-field split is the interesting part, and it does not favour one side everywhere.
+
+| Fields where the fine-tune wins | F1 gain over rules |
+| --- | --- |
+| `recommended_holding_period_years` | +0.980 |
+| `entry_charge_pct` | +0.945 |
+| `management_company` | +0.941 |
+| `benchmark` | +0.822 |
+| `exit_charge_pct` | +0.810 |
+| `investment_objective` | +0.796 |
+| `ongoing_charges_pct` | +0.735 |
+| `currency` | +0.508 |
+
+Every one of those is a field the extractor finds by reading a label. When the wording changes,
+regex scores exactly zero and the model keeps working.
+
+| Fields where rules win | F1 gap |
+| --- | --- |
+| `isin` | −0.083 |
+| `fund_name` | −0.061 |
+| `scenarios.*.value` | −0.04 to 0.00 |
+| `sri` | −0.014 |
+
+Every one of those is recoverable by *shape* rather than by name: a checksummed identifier, the
+line under the title, a numeric table, a bracketed digit on a 1-to-7 scale. A regular expression
+is exact at those and the model merely near-exact. **A hybrid that takes ISIN and the risk scale
+from rules and everything else from the model would beat both**, and that is a more useful
+conclusion than declaring a winner.
+
+### What the fine-tune is still bad at
+
+`transaction_costs_pct` scores 0.078 and `domicile` 0.350 on unseen wordings. Schema validity
+also drops from 1.00 to 0.88 once the layout is unfamiliar, so roughly one output in eight still
+needs a retry. Exact match over all 23 fields at once is 0.02 — per-field accuracy of 0.86 does
+not mean whole-record accuracy, and any pipeline built on this needs field-level validation
+rather than trusting a record wholesale.
+
+### Cost
+
+Rules run in 1 ms per document; the model takes 21 s on four CPU threads — about 20,000× more
+expensive. Where a hand-written extractor covers your providers, it is unbeatable on cost. The
+model earns its keep exactly when a new provider appears and the regex silently returns nothing.
+
 ## Running it
 
 ```bash

@@ -76,17 +76,36 @@ The collapse on unseen wordings is the gap this adapter is trained to close.
 
 ### Results
 
-Produced by the evaluation harness and written to `reports/RESULTS.md`:
+All systems scored on the same 50 documents by identical code.
 
-```bash
-python -m kidextract.cli.evaluate --split data/processed/test_unseen_layout.jsonl \
-    --system finetuned --adapter runs/smollm2-135m-r16/adapter
-python -m kidextract.cli.report --dir reports --out reports/RESULTS.md
-```
+Unseen layouts and unseen label wordings:
 
-This card is updated from that report rather than by hand, so the numbers here and the numbers
-in the repository cannot drift apart. If the fine-tune does not beat the baselines, that
-result is published unchanged.
+| System | Micro F1 | Macro F1 | Exact | Schema valid | Hallucination | Latency |
+| --- | --- | --- | --- | --- | --- | --- |
+| **fine-tuned 135M** | 0.858 | 0.830 | 0.02 | 0.88 | 0.005 | 21.3 s |
+| rules | 0.643 | 0.514 | 0.00 | 1.00 | 0.000 | 0.001 s |
+| few-shot 135M | 0.169 | 0.155 | 0.00 | 0.50 | 0.491 | 40.0 s |
+| zero-shot 135M | 0.000 | 0.000 | 0.00 | 0.00 | 0.000 | 28.1 s |
+
+Known layouts and wordings:
+
+| System | Micro F1 | Macro F1 | Exact | Schema valid | Hallucination | Latency |
+| --- | --- | --- | --- | --- | --- | --- |
+| fine-tuned 135M | 0.988 | 0.988 | 0.82 | 1.00 | 0.006 | 21.1 s |
+| rules | 0.983 | 0.982 | 0.72 | 1.00 | 0.000 | 0.001 s |
+
+The same base model goes from producing no valid JSON at all to 0.858 micro F1 on
+documents whose layout and vocabulary it has never seen. Few-shot prompting reaches only
+0.50 schema validity and invents 49% of the values it emits.
+
+Rules remain better on fields recoverable by shape rather than by name — ISIN, fund name, the
+scenario table, the risk scale — and run 20,000 times faster. The model wins on every
+label-dependent field, where an unfamiliar wording sends a regular expression to zero. A hybrid
+would beat both.
+
+Still weak: `transaction_costs_pct` at 0.078 and `domicile` at 0.350 on unseen wordings, schema
+validity dropping to 0.88, and exact match over all 23 fields at once of 0.02. Per-field
+accuracy is not whole-record accuracy; validate fields individually rather than trusting a record.
 
 ## Limitations
 

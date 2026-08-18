@@ -1,15 +1,15 @@
 {
-  "system": "rules",
+  "system": "finetuned",
   "split": "test_seen",
   "documents": 50,
-  "micro_f1": 0.9834,
-  "macro_f1": 0.9816,
-  "exact_match": 0.72,
+  "micro_f1": 0.9876,
+  "macro_f1": 0.9884,
+  "exact_match": 0.82,
   "schema_validity": 1.0,
-  "hallucination_rate": 0.0,
+  "hallucination_rate": 0.00562,
   "parse_failures": 0,
   "schema_failures": 0,
-  "median_latency_seconds": 0.001,
+  "median_latency_seconds": 21.056,
   "per_field": {
     "fund_name": {
       "precision": 1.0,
@@ -26,23 +26,23 @@
       "support": 50
     },
     "currency": {
+      "precision": 0.9737,
+      "recall": 1.0,
+      "f1": 0.9867,
+      "null_accuracy": 0.9231,
+      "support": 37
+    },
+    "sri": {
       "precision": 1.0,
       "recall": 1.0,
       "f1": 1.0,
       "null_accuracy": 1.0,
-      "support": 37
-    },
-    "sri": {
-      "precision": 0.9744,
-      "recall": 1.0,
-      "f1": 0.987,
-      "null_accuracy": 0.9167,
       "support": 38
     },
     "srri": {
       "precision": 1.0,
-      "recall": 0.9167,
-      "f1": 0.9565,
+      "recall": 1.0,
+      "f1": 1.0,
       "null_accuracy": 1.0,
       "support": 12
     },
@@ -54,10 +54,10 @@
       "support": 50
     },
     "entry_charge_pct": {
-      "precision": 1.0,
-      "recall": 1.0,
-      "f1": 1.0,
-      "null_accuracy": 1.0,
+      "precision": 0.9556,
+      "recall": 0.9773,
+      "f1": 0.9663,
+      "null_accuracy": 0.7143,
       "support": 44
     },
     "exit_charge_pct": {
@@ -68,10 +68,10 @@
       "support": 43
     },
     "transaction_costs_pct": {
-      "precision": 1.0,
+      "precision": 0.9714,
       "recall": 1.0,
-      "f1": 1.0,
-      "null_accuracy": 1.0,
+      "f1": 0.9855,
+      "null_accuracy": 0.9375,
       "support": 34
     },
     "performance_fee_pct": {
@@ -83,16 +83,16 @@
     },
     "recommended_holding_period_years": {
       "precision": 1.0,
-      "recall": 0.9545,
-      "f1": 0.9767,
+      "recall": 1.0,
+      "f1": 1.0,
       "null_accuracy": 1.0,
       "support": 44
     },
     "investment_objective": {
-      "precision": 1.0,
-      "recall": 0.98,
-      "f1": 0.9899,
-      "null_accuracy": 1.0,
+      "precision": 0.94,
+      "recall": 0.94,
+      "f1": 0.94,
+      "null_accuracy": 0.0,
       "support": 50
     },
     "benchmark": {
@@ -110,10 +110,10 @@
       "support": 35
     },
     "management_company": {
-      "precision": 1.0,
+      "precision": 0.9722,
       "recall": 1.0,
-      "f1": 1.0,
-      "null_accuracy": 1.0,
+      "f1": 0.9859,
+      "null_accuracy": 0.9333,
       "support": 35
     },
     "scenarios.stress.value": {
@@ -131,44 +131,44 @@
       "support": 38
     },
     "scenarios.unfavourable.value": {
-      "precision": 0.9697,
-      "recall": 0.8421,
-      "f1": 0.9014,
+      "precision": 0.9737,
+      "recall": 0.9737,
+      "f1": 0.9737,
       "null_accuracy": 0.9231,
       "support": 38
     },
     "scenarios.unfavourable.return_pct": {
-      "precision": 1.0,
-      "recall": 0.8684,
-      "f1": 0.9296,
-      "null_accuracy": 1.0,
+      "precision": 0.9737,
+      "recall": 0.9737,
+      "f1": 0.9737,
+      "null_accuracy": 0.9231,
       "support": 38
     },
     "scenarios.moderate.value": {
-      "precision": 1.0,
+      "precision": 0.9211,
       "recall": 0.9211,
-      "f1": 0.9589,
-      "null_accuracy": 1.0,
+      "f1": 0.9211,
+      "null_accuracy": 0.8,
       "support": 38
     },
     "scenarios.moderate.return_pct": {
       "precision": 1.0,
-      "recall": 0.9211,
-      "f1": 0.9589,
+      "recall": 1.0,
+      "f1": 1.0,
       "null_accuracy": 1.0,
       "support": 38
     },
     "scenarios.favourable.value": {
       "precision": 1.0,
-      "recall": 0.9211,
-      "f1": 0.9589,
+      "recall": 1.0,
+      "f1": 1.0,
       "null_accuracy": 1.0,
       "support": 38
     },
     "scenarios.favourable.return_pct": {
       "precision": 1.0,
-      "recall": 0.9211,
-      "f1": 0.9589,
+      "recall": 1.0,
+      "f1": 1.0,
       "null_accuracy": 1.0,
       "support": 38
     }
