@@ -105,8 +105,16 @@ def parse_currency(value: str | None) -> str | None:
     return match.group(1) if match else None
 
 
-def parse_isin(value: str | None) -> str | None:
+_ISIN = re.compile(r"\b([A-Z]{2}[A-Z0-9]{9}\d)\b")
+
+
+def parse_isin(value: str | None, validator=None) -> str | None:
     if value is None:
         return None
-    match = re.search(r"\b([A-Z]{2}[A-Z0-9]{9}\d)\b", value.upper().replace(" ", ""))
-    return match.group(1) if match else None
+    for line in value.upper().splitlines():
+        for candidate in (line, line.replace(" ", "")):
+            for match in _ISIN.finditer(candidate):
+                code = match.group(1)
+                if validator is None or validator(code):
+                    return code
+    return None

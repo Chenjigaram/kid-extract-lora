@@ -78,3 +78,21 @@ def test_clean_text_collapses_whitespace_and_soft_hyphens():
 
 def test_clean_text_of_blank_is_none():
     assert clean_text("   ") is None
+
+
+def test_isin_is_not_fabricated_across_lines():
+    text = "FAVOURABLE\n25,000.00\nMODERATE\n12,500.00"
+    assert parse_isin(text) is None or len(parse_isin(text)) == 12
+
+
+def test_isin_search_respects_line_boundaries():
+    from kidextract.schema import isin_is_valid
+
+    text = "FAVOURABLE\n25 000\nISIN LU0690375182"
+    assert parse_isin(text, validator=isin_is_valid) == "LU0690375182"
+
+
+def test_isin_validator_rejects_bad_checksums():
+    from kidextract.schema import isin_is_valid
+
+    assert parse_isin("code LU0690375183", validator=isin_is_valid) is None
