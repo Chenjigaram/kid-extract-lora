@@ -7,7 +7,7 @@ from pathlib import Path
 FRONT_MATTER = """---
 license: mit
 task_categories:
-  - text2text-generation
+  - text-generation
 language:
   - en
   - de
