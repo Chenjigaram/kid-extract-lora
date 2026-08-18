@@ -5,6 +5,9 @@ import json
 from pathlib import Path
 
 
+EXCLUDE = ("training_args.bin", "optimizer.pt", "scheduler.pt", "rng_state.pth")
+
+
 def read_card(path: Path, repo_id: str, base_model: str) -> str:
     body = path.read_text()
     front_matter = "\n".join(
@@ -44,7 +47,7 @@ def main() -> None:
         raise SystemExit(f"adapter not found: {args.adapter}")
 
     card = read_card(args.card, args.repo_id, args.base_model)
-    files = sorted(path.name for path in args.adapter.iterdir())
+    files = sorted(p.name for p in args.adapter.iterdir() if p.name not in EXCLUDE)
     if args.dry_run:
         print(json.dumps({"repo_id": args.repo_id, "files": files, "card_bytes": len(card)}, indent=2))
         return
@@ -54,7 +57,12 @@ def main() -> None:
     api = HfApi()
     api.create_repo(args.repo_id, private=args.private, exist_ok=True)
     (args.adapter / "README.md").write_text(card)
-    api.upload_folder(folder_path=str(args.adapter), repo_id=args.repo_id, commit_message="Publish adapter")
+    api.upload_folder(
+        folder_path=str(args.adapter),
+        repo_id=args.repo_id,
+        commit_message="Publish adapter",
+        ignore_patterns=list(EXCLUDE),
+    )
     print(f"published https://huggingface.co/{args.repo_id}")
 
 

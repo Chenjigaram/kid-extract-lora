@@ -3,8 +3,10 @@ THREADS ?= 4
 DATA ?= data/processed
 SPLIT ?= $(DATA)/test_unseen_layout.jsonl
 ADAPTER ?= runs/smollm2-135m-r16/adapter
+HF_MODEL ?= Chenjigaram/kid-extract-135m-lora
+HF_DATASET ?= Chenjigaram/kid-extract-synthetic
 
-.PHONY: install test lint smoke data rules zero-shot few-shot finetuned train sweep benchmark plots report clean
+.PHONY: install test lint smoke data rules zero-shot few-shot finetuned train sweep benchmark plots report publish clean
 
 install:
 	uv venv --python 3.12 .venv
@@ -49,6 +51,10 @@ plots:
 
 report:
 	$(PYTHON) -m kidextract.cli.report --dir reports --out reports/RESULTS.md
+
+publish:
+	$(PYTHON) -m kidextract.cli.push_to_hub --adapter $(ADAPTER) --repo-id $(HF_MODEL) --dry-run
+	$(PYTHON) -m kidextract.cli.push_dataset --repo-id $(HF_DATASET) --dry-run
 
 clean:
 	rm -rf runs reports/*.json reports/*.jsonl
