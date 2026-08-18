@@ -85,7 +85,7 @@ result is published unchanged.
 - A 135M model has little capacity for reasoning about a value that is implied rather than
   stated. Fields requiring inference are out of reach by design; the prompt instructs the
   model to copy, not calculate.
-- Long documents are truncated at 1280 tokens.
+- Long documents are truncated at 1408 tokens.
 - Text must already be extracted from the PDF. No OCR or layout analysis is included.
 
 ## Licence
