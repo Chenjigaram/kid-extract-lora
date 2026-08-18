@@ -88,3 +88,23 @@ for name, documents in (
 ):
     strict, field = agreement(documents)
     print(f"{name}: strict={strict:.3f}  per-field={field:.3f}")
+
+
+def field_breakdown(documents):
+    disagree = {name: 0 for name in ALL_FIELDS}
+    for text in documents:
+        a = flatten(extract_with(KNOWN_LABELS, text))
+        b = flatten(extract_with(ALL_LABELS, text))
+        for name in ALL_FIELDS:
+            if a[name] is None and b[name] is None:
+                continue
+            if a[name] is None or b[name] is None or not values_match(name, a[name], b[name]):
+                disagree[name] += 1
+    return sorted(disagree.items(), key=lambda kv: -kv[1])
+
+
+print()
+print("where they disagree, uniform sample:")
+for name, count in field_breakdown(uniform_documents(N, 2)):
+    if count:
+        print(f"  {name:<34} {count:>4} / {N}  ({100*count/N:.0f}%)")
