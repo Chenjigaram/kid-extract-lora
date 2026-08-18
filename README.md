@@ -62,6 +62,34 @@ survive, because those are recoverable by shape rather than by name. That collap
 gap the fine-tuned model exists to close, and it mirrors exactly what happens to a hand-built
 extractor when a new provider appears.
 
+## What this actually costs on a laptop
+
+Measured on an Intel i5-8365U, 4 cores, 4 threads, no GPU. These are the real numbers, not
+estimates, and they are the constraint that shapes the whole project.
+
+| Operation | Cost |
+| --- | --- |
+| Training, per example (135M, LoRA, ~850 tokens) | ~14 s |
+| Evaluation forward pass, per example | ~2.2 s |
+| Generation, per document (400 new tokens) | ~28 s |
+| Peak resident memory during training | ~1.5 GB |
+| Trainable parameters | 4.88 M of 139 M (3.5%) |
+
+Two consequences follow, and both are designed around rather than ignored:
+
+**A training run is an overnight job, not a coffee break.** 1500 examples for two epochs is
+roughly twelve hours. `configs/base.yaml` is sized accordingly; increasing the corpus beyond
+a few thousand examples is not useful on this hardware.
+
+**The sweep cannot generate.** Seventeen configurations, each scored by generating on sixty
+documents, is over eight hours of generation alone. So `make sweep` ranks configurations by
+validation loss with `--skip-generation`, and only the winner is scored end to end with the
+full metric suite. This is stated because ranking by loss and reporting F1 are not the same
+thing, and pretending otherwise would be dishonest.
+
+If you have a free Kaggle or Colab GPU, the same commands run there unchanged and roughly two
+orders of magnitude faster. Nothing in this repository requires one.
+
 ## What is measured
 
 - field-level precision, recall and F1 over 23 fields
@@ -84,6 +112,12 @@ cheaper than abstaining.
 | `finetuned` | The same base model with a LoRA adapter. |
 
 All four run on CPU and are scored by identical code on identical splits.
+
+An early probe is worth stating up front: the base 135M model, prompted zero-shot with the
+full field specification, produced **no parseable JSON at all** on the first four documents
+tried. Micro F1 0.000, schema validity 0.000, at 28 seconds per document. That is the exact
+failure mode fine-tuning is supposed to fix, and it is why the comparison table below is
+worth building rather than assuming.
 
 ## Running it
 
