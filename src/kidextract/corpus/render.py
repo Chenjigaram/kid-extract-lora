@@ -1,13 +1,14 @@
 from __future__ import annotations
 
 import random
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from ..normalize import clean_text
 from ..schema import KidRecord, PerformanceScenarios, Scenario
 from .facts import FundFacts
 from .layouts import Layout
 from .objectives import objective_text
+from .vocabulary import build_labels
 
 YEAR_WORD = {"en": "years", "de": "Jahre", "fr": "ans", "nl": "jaar"}
 
@@ -65,6 +66,7 @@ class GeneratedDocument:
     layout: str
     doc_type: str
     language: str
+    labels: dict[str, str] = field(default_factory=dict)
 
 
 def format_percent(value: float, style: str, allow_bps: bool = False) -> str:
@@ -95,8 +97,7 @@ def _kv(label: str, value: str, layout: Layout) -> str:
     return f"{label}{layout.key_separator} {value}"
 
 
-def _render_header(facts: FundFacts, layout: Layout, shown: set[str]) -> list[str]:
-    words = layout.words
+def _render_header(facts: FundFacts, layout: Layout, shown: set[str], words: dict[str, str]) -> list[str]:
     title = words["title_kid"] if layout.doc_type == "kid" else words["title_kiid"]
     lines = [title, "", facts.fund_name, ""]
     if layout.doc_type == "kid":
@@ -112,16 +113,16 @@ def _render_header(facts: FundFacts, layout: Layout, shown: set[str]) -> list[st
     return lines
 
 
-def _render_objective(layout: Layout, shown: set[str], facts: FundFacts, objective: str) -> list[str]:
-    words = layout.words
+def _render_objective(
+    layout: Layout, shown: set[str], facts: FundFacts, objective: str, words: dict[str, str]
+) -> list[str]:
     lines = [_heading(words["objective"], layout), objective]
     if "benchmark" in shown:
         lines.append(_kv(words["benchmark"], facts.benchmark, layout))
     return lines
 
 
-def _render_risk(facts: FundFacts, layout: Layout) -> list[str]:
-    words = layout.words
+def _render_risk(facts: FundFacts, layout: Layout, words: dict[str, str]) -> list[str]:
     level = facts.risk_level
     lines = [_heading(words["risk"], layout)]
     if layout.risk_style == "scale":
@@ -140,8 +141,7 @@ def _render_risk(facts: FundFacts, layout: Layout) -> list[str]:
     return lines
 
 
-def _render_scenarios(facts: FundFacts, layout: Layout) -> list[str]:
-    words = layout.words
+def _render_scenarios(facts: FundFacts, layout: Layout, words: dict[str, str]) -> list[str]:
     lines = [_heading(words["scenarios"], layout), f"{words['scenario_intro']} {facts.currency}"]
     for name in ("stress", "unfavourable", "moderate", "favourable"):
         value, annual = facts.scenarios[name]
@@ -154,8 +154,7 @@ def _render_scenarios(facts: FundFacts, layout: Layout) -> list[str]:
     return lines
 
 
-def _render_costs(facts: FundFacts, layout: Layout, shown: set[str]) -> list[str]:
-    words = layout.words
+def _render_costs(facts: FundFacts, layout: Layout, shown: set[str], words: dict[str, str]) -> list[str]:
     style = layout.number_style
     items: list[tuple[str, str]] = []
     if "entry_charge_pct" in shown:
@@ -179,14 +178,12 @@ def _render_costs(facts: FundFacts, layout: Layout, shown: set[str]) -> list[str
     return lines
 
 
-def _render_holding(facts: FundFacts, layout: Layout) -> list[str]:
-    words = layout.words
+def _render_holding(facts: FundFacts, layout: Layout, words: dict[str, str]) -> list[str]:
     period = format_years(facts.recommended_holding_period_years, layout.language)
     return [_heading(words["holding"], layout), _kv(words["rhp"], period, layout)]
 
 
-def _render_practical(layout: Layout, rng: random.Random) -> list[str]:
-    words = layout.words
+def _render_practical(layout: Layout, rng: random.Random, words: dict[str, str]) -> list[str]:
     pool = DISTRACTORS[layout.language]
     return [_heading(words["practical"], layout), *rng.sample(pool, k=rng.randint(2, len(pool)))]
 
@@ -242,26 +239,29 @@ def build_record(
     )
 
 
-def render(facts: FundFacts, layout: Layout, rng: random.Random) -> GeneratedDocument:
+def render(
+    facts: FundFacts, layout: Layout, rng: random.Random, vocabulary: str = "known"
+) -> GeneratedDocument:
     shown = choose_shown_fields(facts, layout, rng)
+    words = build_labels(layout.language, rng, vocabulary)
     sections = set(layout.sections)
     objective = objective_text(facts.strategy, facts.benchmark, layout.language, rng)
     blocks: list[list[str]] = []
     for section in layout.sections:
         if section == "header":
-            blocks.append(_render_header(facts, layout, shown))
+            blocks.append(_render_header(facts, layout, shown, words))
         elif section == "objective":
-            blocks.append(_render_objective(layout, shown, facts, objective))
+            blocks.append(_render_objective(layout, shown, facts, objective, words))
         elif section == "risk":
-            blocks.append(_render_risk(facts, layout))
+            blocks.append(_render_risk(facts, layout, words))
         elif section == "scenarios":
-            blocks.append(_render_scenarios(facts, layout))
+            blocks.append(_render_scenarios(facts, layout, words))
         elif section == "costs":
-            blocks.append(_render_costs(facts, layout, shown))
+            blocks.append(_render_costs(facts, layout, shown, words))
         elif section == "holding":
-            blocks.append(_render_holding(facts, layout))
+            blocks.append(_render_holding(facts, layout, words))
         elif section == "practical":
-            blocks.append(_render_practical(layout, rng))
+            blocks.append(_render_practical(layout, rng, words))
 
     text = "\n\n".join("\n".join(block) for block in blocks)
     record = build_record(facts, layout, shown, sections, objective)
@@ -271,4 +271,5 @@ def render(facts: FundFacts, layout: Layout, rng: random.Random) -> GeneratedDoc
         layout=layout.name,
         doc_type=layout.doc_type,
         language=layout.language,
+        labels=words,
     )

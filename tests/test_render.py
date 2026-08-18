@@ -4,6 +4,7 @@ import pytest
 
 from kidextract.corpus.facts import synthesise_fund
 from kidextract.corpus.layouts import LAYOUTS, LAYOUTS_BY_NAME
+from kidextract.corpus.vocabulary import all_labels_for
 from kidextract.corpus.render import format_percent, render
 
 SCALAR_TEXT_FIELDS = ("fund_name", "isin", "currency", "benchmark", "domicile", "management_company")
@@ -64,10 +65,15 @@ def test_kiid_documents_carry_no_priips_scenarios(corpus):
 
 def test_absent_cost_labels_are_not_rendered(corpus):
     for doc in corpus:
-        layout = LAYOUTS_BY_NAME[doc.layout]
         for field, key in (("exit_charge_pct", "exit"), ("transaction_costs_pct", "transaction")):
             if getattr(doc.record, field) is None:
-                assert layout.words[key] not in doc.text
+                assert doc.labels[key] not in doc.text
+
+
+def test_label_wording_varies_between_documents(corpus):
+    wordings = {doc.labels["ongoing"] for doc in corpus}
+    assert len(wordings) > 1
+    assert wordings <= all_labels_for("ongoing")
 
 
 def test_every_layout_produces_a_substantial_document(corpus):

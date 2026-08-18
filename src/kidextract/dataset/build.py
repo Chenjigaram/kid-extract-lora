@@ -28,6 +28,7 @@ class SplitPlan:
     size: int
     seed: int
     noise_rate: float = 0.02
+    vocabulary: str = "known"
 
 
 def default_plans(train: int, validation: int, test: int) -> tuple[SplitPlan, ...]:
@@ -35,7 +36,7 @@ def default_plans(train: int, validation: int, test: int) -> tuple[SplitPlan, ..
         SplitPlan("train", TRAINING_LAYOUTS, train, seed=1001),
         SplitPlan("validation", TRAINING_LAYOUTS, validation, seed=2002),
         SplitPlan("test_seen", TRAINING_LAYOUTS, test, seed=3003),
-        SplitPlan("test_unseen_layout", HELD_OUT_LAYOUTS, test, seed=4004),
+        SplitPlan("test_unseen_layout", HELD_OUT_LAYOUTS, test, seed=4004, vocabulary="held_out"),
     )
 
 
@@ -65,7 +66,7 @@ def generate_split(
             facts = facts_from_reference(reference.iloc[reference_offset + index], rng)
         else:
             facts = synthesise_fund(rng)
-        document = render(facts, layout, rng)
+        document = render(facts, layout, rng, plan.vocabulary)
         text = inject_noise(
             document.text,
             _protected_values(document.record, layout),

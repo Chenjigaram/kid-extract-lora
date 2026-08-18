@@ -80,43 +80,11 @@ class FundFacts:
     transaction_costs_pct: float
     performance_fee_pct: float
     recommended_holding_period_years: float
-    investment_objective: str
+    strategy: str
     benchmark: str
     domicile: str
     management_company: str
     scenarios: dict[str, tuple[float, float]] = field(default_factory=dict)
-
-
-def _objective(strategy: str, benchmark: str, rng: random.Random) -> str:
-    openings = (
-        "The Fund aims to achieve long-term capital growth by investing",
-        "The objective of the Fund is to provide a total return by investing",
-        "The Fund seeks to outperform its benchmark over the recommended holding period by investing",
-        "This Fund is actively managed and invests",
-    )
-    holdings = {
-        "Global Equity": "in a diversified portfolio of equities of companies worldwide",
-        "European Equity": "primarily in equities of companies domiciled in Europe",
-        "Emerging Markets Equity": "in equities of companies located in emerging market countries",
-        "Euro Government Bond": "in bonds issued by euro area governments",
-        "Euro Corporate Bond": "in investment grade bonds issued by companies in the euro area",
-        "Global High Yield": "in sub-investment grade corporate bonds issued worldwide",
-        "Sustainable Global Equity": "in equities of companies worldwide that meet the Fund's sustainability criteria",
-        "Multi-Asset Balanced": "across equities, bonds and money market instruments",
-        "Short Duration Bond": "in bonds with a residual maturity of less than three years",
-        "Technology Equity": "in equities of companies active in the information technology sector",
-        "Real Estate Equity": "in listed real estate companies and REITs in developed Europe",
-        "Money Market": "in high quality short-term money market instruments",
-    }
-    closing = rng.choice(
-        (
-            f" The Fund is managed with reference to the {benchmark} index.",
-            f" Performance is compared against the {benchmark}.",
-            " The Fund does not track any index.",
-            "",
-        )
-    )
-    return f"{rng.choice(openings)} {holdings[strategy]}.{closing}"
 
 
 def _scenarios(risk_level: int, years: float, rng: random.Random) -> dict[str, tuple[float, float]]:
@@ -153,7 +121,7 @@ def synthesise_fund(rng: random.Random) -> FundFacts:
         transaction_costs_pct=round(rng.uniform(0.0, 0.45), 2),
         performance_fee_pct=round(rng.choice((0.0, 0.0, 0.0, 10.0, 15.0, 20.0)), 2),
         recommended_holding_period_years=years,
-        investment_objective=_objective(strategy, benchmark, rng),
+        strategy=strategy,
         benchmark=benchmark,
         domicile=DOMICILES[country],
         management_company=manager,
@@ -217,7 +185,7 @@ def facts_from_reference(row: pd.Series, rng: random.Random) -> FundFacts:
         transaction_costs_pct=template.transaction_costs_pct,
         performance_fee_pct=template.performance_fee_pct,
         recommended_holding_period_years=years,
-        investment_objective=template.investment_objective,
+        strategy=template.strategy,
         benchmark=str(benchmark) if pd.notna(benchmark) else template.benchmark,
         domicile=str(domicile) if pd.notna(domicile) else template.domicile,
         management_company=str(manager) if pd.notna(manager) else template.management_company,

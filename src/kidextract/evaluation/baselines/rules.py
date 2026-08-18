@@ -3,6 +3,7 @@ from __future__ import annotations
 import re
 
 from ...corpus.layouts import HEADINGS
+from ...corpus.vocabulary import all_labels_for
 from ...schema import isin_is_valid
 from ...normalize import (
     clean_text,
@@ -43,9 +44,9 @@ SEPARATORS = (":", " :", " -", " |")
 
 def _label_index() -> list[tuple[str, str]]:
     pairs = []
-    for words in HEADINGS.values():
-        for key, field in FIELD_BY_LABEL_KEY.items():
-            pairs.append((words[key].casefold(), field))
+    for key, field in FIELD_BY_LABEL_KEY.items():
+        for label in all_labels_for(key):
+            pairs.append((label.casefold(), field))
     return sorted(set(pairs), key=lambda pair: -len(pair[0]))
 
 
@@ -58,7 +59,7 @@ def _scenario_index() -> list[tuple[str, str]]:
 
 
 def _objective_headings() -> list[str]:
-    return [words["objective"].casefold() for words in HEADINGS.values()]
+    return [label.casefold() for label in all_labels_for("objective")]
 
 
 def _title_map() -> list[tuple[str, str]]:
@@ -74,9 +75,9 @@ SCENARIO_LABELS = _scenario_index()
 OBJECTIVE_HEADINGS = _objective_headings()
 TITLES = _title_map()
 ALL_HEADINGS = {
-    words[key].casefold()
-    for words in HEADINGS.values()
+    label.casefold()
     for key in ("purpose", "product", "objective", "risk", "scenarios", "costs", "holding", "practical")
+    for label in all_labels_for(key)
 }
 
 

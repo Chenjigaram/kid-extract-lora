@@ -86,3 +86,19 @@ def test_jsonl_round_trip(tmp_path):
 def test_generation_is_deterministic():
     plan = default_plans(6, 1, 1)[0]
     assert list(generate_split(plan)) == list(generate_split(plan))
+
+
+def test_evaluation_split_uses_reserved_wordings(splits):
+    from kidextract.corpus.vocabulary import all_labels_for
+
+    reserved = all_labels_for("ongoing", "held_out")
+    hits = sum(1 for row in splits["test_unseen_layout"] if any(w in row["text"] for w in reserved))
+    assert hits > 0
+
+
+def test_training_split_never_uses_reserved_wordings(splits):
+    from kidextract.corpus.vocabulary import all_labels_for
+
+    reserved = all_labels_for("ongoing", "held_out") | all_labels_for("isin", "held_out")
+    for row in splits["train"]:
+        assert not any(word in row["text"] for word in reserved)
