@@ -12,7 +12,6 @@ SCENARIO_FIELDS = tuple(
 ALL_FIELDS = SCALAR_FIELDS + SCENARIO_FIELDS
 
 INTEGER_FIELDS = ("sri", "srri")
-TEXT_FIELDS = ("fund_name", "isin", "currency", "investment_objective", "benchmark", "domicile", "management_company")
 
 PERCENT_TOLERANCE = 0.005
 MONEY_TOLERANCE = 0.01
@@ -30,7 +29,7 @@ def flatten(record: dict | None) -> dict[str, object]:
     return flat
 
 
-def _as_number(value: object) -> float | None:
+def as_number(value: object) -> float | None:
     if isinstance(value, bool):
         return None
     if isinstance(value, (int, float)):
@@ -45,10 +44,10 @@ def _as_number(value: object) -> float | None:
 
 def values_match(name: str, gold: object, prediction: object) -> bool:
     if name in INTEGER_FIELDS:
-        gold_number, predicted_number = _as_number(gold), _as_number(prediction)
+        gold_number, predicted_number = as_number(gold), as_number(prediction)
         return gold_number is not None and gold_number == predicted_number
     if name in NUMERIC_FIELDS or name.startswith("scenarios."):
-        gold_number, predicted_number = _as_number(gold), _as_number(prediction)
+        gold_number, predicted_number = as_number(gold), as_number(prediction)
         if gold_number is None or predicted_number is None:
             return False
         tolerance = MONEY_TOLERANCE if name.endswith(".value") else PERCENT_TOLERANCE

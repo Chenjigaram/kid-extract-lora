@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 from ..normalize import clean_text
-from .metrics import ALL_FIELDS, INTEGER_FIELDS, TEXT_FIELDS, Evaluation, _as_number, flatten
+from ..schema import TEXT_FIELDS
+from .metrics import ALL_FIELDS, INTEGER_FIELDS, Evaluation, as_number, flatten
 
 
 def numeric_surface_forms(value: float) -> set[str]:
@@ -30,7 +31,7 @@ def is_grounded(name: str, value: object, text: str) -> bool:
     if name in TEXT_FIELDS:
         needle = clean_text(str(value))
         return bool(needle) and needle.casefold() in haystack.casefold()
-    number = _as_number(value)
+    number = as_number(value)
     if number is None:
         return False
     if name in INTEGER_FIELDS:
