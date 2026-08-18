@@ -188,9 +188,11 @@ def _render_practical(layout: Layout, rng: random.Random, words: dict[str, str])
     return [_heading(words["practical"], layout), *rng.sample(pool, k=rng.randint(2, len(pool)))]
 
 
-def choose_shown_fields(facts: FundFacts, layout: Layout, rng: random.Random) -> set[str]:
+def choose_shown_fields(
+    facts: FundFacts, layout: Layout, rng: random.Random, dropout: dict[str, float] | None = None
+) -> set[str]:
     shown = set()
-    for name, probability in DROPOUT.items():
+    for name, probability in (dropout or DROPOUT).items():
         if rng.random() >= probability:
             shown.add(name)
     if layout.doc_type == "kiid":
@@ -240,9 +242,13 @@ def build_record(
 
 
 def render(
-    facts: FundFacts, layout: Layout, rng: random.Random, vocabulary: str = "known"
+    facts: FundFacts,
+    layout: Layout,
+    rng: random.Random,
+    vocabulary: str = "known",
+    dropout: dict[str, float] | None = None,
 ) -> GeneratedDocument:
-    shown = choose_shown_fields(facts, layout, rng)
+    shown = choose_shown_fields(facts, layout, rng, dropout)
     words = build_labels(layout.language, rng, vocabulary)
     sections = set(layout.sections)
     objective = objective_text(facts.strategy, facts.benchmark, layout.language, rng)

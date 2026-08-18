@@ -85,10 +85,18 @@ def _strip_bullet(line: str) -> str:
     return line.lstrip().removeprefix("- ").strip()
 
 
-def _split_label(line: str) -> tuple[str, str] | None:
+def build_label_index(vocabulary: str = "known") -> list[tuple[str, str]]:
+    pairs = []
+    for key, field in FIELD_BY_LABEL_KEY.items():
+        for label in all_labels_for(key, vocabulary):
+            pairs.append((label.casefold(), field))
+    return sorted(set(pairs), key=lambda pair: -len(pair[0]))
+
+
+def _split_label(line: str, labels: list[tuple[str, str]] | None = None) -> tuple[str, str] | None:
     candidate = _strip_bullet(line)
     lowered = candidate.casefold()
-    for label, field in LABELS:
+    for label, field in labels or LABELS:
         if lowered.startswith(label):
             remainder = candidate[len(label) :]
             for separator in SEPARATORS:
@@ -131,22 +139,22 @@ def _detect_fund_name(lines: list[str]) -> str | None:
     return None
 
 
-def _detect_objective(lines: list[str]) -> str | None:
+def _detect_objective(lines: list[str], labels: list[tuple[str, str]] | None = None) -> str | None:
     for index, line in enumerate(lines):
         if line.strip().casefold() in OBJECTIVE_HEADINGS:
             for candidate in lines[index + 1 :]:
                 stripped = candidate.strip()
                 if not stripped:
                     return None
-                if _split_label(candidate):
+                if _split_label(candidate, labels):
                     continue
                 return clean_text(stripped)
     return None
 
 
-def _detect_prose_costs(text: str, found: dict) -> None:
+def _detect_prose_costs(text: str, found: dict, labels: list[tuple[str, str]] | None = None) -> None:
     connectors = r"(?:amount to|betragen|s'[ée]l[èe]vent [àa]|bedragen)"
-    for label, field in LABELS:
+    for label, field in labels or LABELS:
         if field not in PERCENT_TARGETS or field in found:
             continue
         pattern = re.compile(
@@ -176,11 +184,11 @@ def _detect_scenarios(lines: list[str]) -> dict | None:
     return scenarios or None
 
 
-def extract(text: str) -> dict:
+def extract(text: str, labels: list[tuple[str, str]] | None = None) -> dict:
     lines = text.split("\n")
     found: dict[str, object] = {}
     for line in lines:
-        parsed = _split_label(line)
+        parsed = _split_label(line, labels)
         if parsed is None:
             continue
         field, raw = parsed
@@ -197,7 +205,7 @@ def extract(text: str) -> dict:
         else:
             found[field] = clean_text(raw)
 
-    _detect_prose_costs(text, found)
+    _detect_prose_costs(text, found, labels)
     risk = _detect_risk(text)
     doc_type = _detect_doc_type(text)
 
@@ -213,7 +221,7 @@ def extract(text: str) -> dict:
         "transaction_costs_pct": found.get("transaction_costs_pct"),
         "performance_fee_pct": found.get("performance_fee_pct"),
         "recommended_holding_period_years": found.get("recommended_holding_period_years"),
-        "investment_objective": _detect_objective(lines),
+        "investment_objective": _detect_objective(lines, labels),
         "benchmark": found.get("benchmark"),
         "domicile": found.get("domicile"),
         "management_company": found.get("management_company"),
