@@ -15,7 +15,7 @@ from ..corpus.render import format_percent, render
 from ..schema import TEXT_FIELDS
 
 HELD_OUT_LAYOUTS = ("amsterdam-bullets", "institutional-bps", "reordered-kid")
-TRAINING_LAYOUTS = tuple(l.name for l in LAYOUTS if l.name not in HELD_OUT_LAYOUTS)
+TRAINING_LAYOUTS = tuple(layout.name for layout in LAYOUTS if layout.name not in HELD_OUT_LAYOUTS)
 
 BPS_CAPABLE_FIELDS = ("ongoing_charges_pct", "transaction_costs_pct")
 PLAIN_PERCENT_FIELDS = ("entry_charge_pct", "exit_charge_pct", "performance_fee_pct")

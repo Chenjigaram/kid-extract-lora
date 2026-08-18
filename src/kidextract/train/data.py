@@ -5,7 +5,7 @@ from pathlib import Path
 from datasets import Dataset
 
 from ..dataset.build import read_jsonl
-from ..dataset.prompts import SYSTEM_PROMPT, USER_TEMPLATE, FIELD_SPEC, target_json
+from ..dataset.prompts import FIELD_SPEC, SYSTEM_PROMPT, USER_TEMPLATE, target_json
 from ..schema import KidRecord
 
 

@@ -10,7 +10,6 @@ import yaml
 
 from ..evaluation.runner import evaluate_system, json_text_extractor
 from .config import load_config
-from .lora import run as run_training
 
 
 def slugify(value: Any) -> str:
@@ -37,7 +36,7 @@ def expand_grid(axes: dict[str, list]) -> list[dict[str, Any]]:
     options = list(axes)
     points = []
     for combination in itertools.product(*(axes[option] for option in options)):
-        overrides = dict(zip(options, combination))
+        overrides = dict(zip(options, combination, strict=True))
         name = ",".join(f"{option.split('.')[-1]}={slugify(value)}" for option, value in overrides.items())
         points.append({"name": name, "overrides": overrides})
     return points
@@ -61,6 +60,8 @@ def run_point(spec: dict, point: dict, threads: int | None, skip_generation: boo
     overrides["output.dir"] = str(output_dir)
     if spec.get("train_samples"):
         overrides["data.max_train_samples"] = spec["train_samples"]
+
+    from .lora import run as run_training
 
     config = load_config(Path(spec["base"]), overrides)
     started = time.time()

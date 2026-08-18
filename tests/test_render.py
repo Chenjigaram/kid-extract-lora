@@ -4,8 +4,8 @@ import pytest
 
 from kidextract.corpus.facts import synthesise_fund
 from kidextract.corpus.layouts import LAYOUTS, LAYOUTS_BY_NAME
-from kidextract.corpus.vocabulary import all_labels_for
 from kidextract.corpus.render import format_percent, render
+from kidextract.corpus.vocabulary import all_labels_for
 
 SCALAR_TEXT_FIELDS = ("fund_name", "isin", "currency", "benchmark", "domicile", "management_company")
 PERCENT_FIELDS = ("entry_charge_pct", "exit_charge_pct", "performance_fee_pct")

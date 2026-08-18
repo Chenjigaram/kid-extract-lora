@@ -168,7 +168,8 @@ def facts_from_reference(row: pd.Series, rng: random.Random) -> FundFacts:
     risk = row.get("risk_level")
     risk_level = int(risk) if pd.notna(risk) and 1 <= float(risk) <= 7 else template.risk_level
     ongoing = row.get("ongoing_charges_pct")
-    ongoing_pct = round(float(ongoing), 2) if pd.notna(ongoing) and 0 < float(ongoing) < 20 else template.ongoing_charges_pct
+    ongoing_is_usable = pd.notna(ongoing) and 0 < float(ongoing) < 20
+    ongoing_pct = round(float(ongoing), 2) if ongoing_is_usable else template.ongoing_charges_pct
     years = HOLDING_PERIOD_BY_RISK[risk_level]
     benchmark = row.get("benchmark")
     manager = row.get("management_company")

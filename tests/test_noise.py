@@ -47,7 +47,7 @@ def test_noise_actually_changes_the_document():
 
 
 def test_zero_rate_still_adds_only_layout_noise():
-    for doc, _layout, text, guards in noisy_corpus(rate=0.0):
+    for _doc, _layout, text, guards in noisy_corpus(rate=0.0):
         for guard in guards:
             assert guard in text
 

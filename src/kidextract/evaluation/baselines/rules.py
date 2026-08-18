@@ -4,7 +4,6 @@ import re
 
 from ...corpus.layouts import HEADINGS
 from ...corpus.vocabulary import all_labels_for
-from ...schema import isin_is_valid
 from ...normalize import (
     clean_text,
     parse_currency,
@@ -14,6 +13,7 @@ from ...normalize import (
     parse_percent,
     parse_years,
 )
+from ...schema import isin_is_valid
 
 FIELD_BY_LABEL_KEY = {
     "isin": "isin",
