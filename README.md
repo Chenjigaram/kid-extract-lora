@@ -54,8 +54,11 @@ Against layouts and wordings it has never seen, the same rule extractor scores:
 
 | Split | Micro F1 | Macro F1 | Exact match |
 | --- | --- | --- | --- |
-| `test_seen` — known layouts and wordings | 0.978 | 0.975 | 0.650 |
-| `test_unseen_layout` — new layouts, new wordings | 0.683 | 0.486 | 0.000 |
+| `test_seen` — known layouts and wordings | 0.978 | 0.976 | 0.633 |
+| `test_unseen_layout` — new layouts, new wordings | 0.645 | 0.516 | 0.000 |
+
+Four layouts are held out, one per language, so the split tests generalisation to
+new layouts and wordings rather than to an unfamiliar language.
 
 Every label-dependent field drops to zero. Only ISIN, the risk scale and the scenario table
 survive, because those are recoverable by shape rather than by name. That collapse is the

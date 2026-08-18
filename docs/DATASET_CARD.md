@@ -56,10 +56,10 @@ charges — so that taking the first number on the page is not a winning strateg
 
 | Split | Layouts | Vocabulary | Purpose |
 | --- | --- | --- | --- |
-| `train` | 9 | known | training |
-| `validation` | 9 | known | model selection |
-| `test_seen` | 9 | known | in-distribution score |
-| `test_unseen_layout` | 3 held out | **reserved** | generalisation |
+| `train` | 8 | known | training |
+| `validation` | 8 | known | model selection |
+| `test_seen` | 8 | known | in-distribution score |
+| `test_unseen_layout` | 4 held out | **reserved** | generalisation |
 
 The last label wording of every field is reserved and appears only in `test_unseen_layout`.
 That split therefore combines layouts and vocabulary the system has never seen, which is the

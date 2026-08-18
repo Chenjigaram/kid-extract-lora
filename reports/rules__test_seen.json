@@ -2,9 +2,9 @@
   "system": "rules",
   "split": "test_seen",
   "documents": 300,
-  "micro_f1": 0.9782,
-  "macro_f1": 0.9752,
-  "exact_match": 0.65,
+  "micro_f1": 0.978,
+  "macro_f1": 0.9761,
+  "exact_match": 0.6333,
   "schema_validity": 1.0,
   "hallucination_rate": 0.0,
   "parse_failures": 0,
@@ -23,28 +23,28 @@
       "recall": 1.0,
       "f1": 1.0,
       "null_accuracy": 1.0,
-      "support": 289
+      "support": 288
     },
     "currency": {
       "precision": 1.0,
       "recall": 1.0,
       "f1": 1.0,
       "null_accuracy": 1.0,
-      "support": 260
+      "support": 261
     },
     "sri": {
-      "precision": 0.9481,
-      "recall": 1.0,
-      "f1": 0.9734,
-      "null_accuracy": 0.8889,
-      "support": 201
+      "precision": 0.9655,
+      "recall": 0.9956,
+      "f1": 0.9803,
+      "null_accuracy": 0.8933,
+      "support": 225
     },
     "srri": {
       "precision": 1.0,
-      "recall": 0.8889,
-      "f1": 0.9412,
+      "recall": 0.8933,
+      "f1": 0.9437,
       "null_accuracy": 1.0,
-      "support": 99
+      "support": 75
     },
     "ongoing_charges_pct": {
       "precision": 1.0,
@@ -58,40 +58,40 @@
       "recall": 1.0,
       "f1": 1.0,
       "null_accuracy": 1.0,
-      "support": 250
+      "support": 259
     },
     "exit_charge_pct": {
       "precision": 1.0,
       "recall": 1.0,
       "f1": 1.0,
       "null_accuracy": 1.0,
-      "support": 253
+      "support": 261
     },
     "transaction_costs_pct": {
       "precision": 1.0,
       "recall": 1.0,
       "f1": 1.0,
       "null_accuracy": 1.0,
-      "support": 175
+      "support": 195
     },
     "performance_fee_pct": {
       "precision": 1.0,
       "recall": 1.0,
       "f1": 1.0,
       "null_accuracy": 1.0,
-      "support": 91
+      "support": 106
     },
     "recommended_holding_period_years": {
       "precision": 1.0,
-      "recall": 0.9139,
-      "f1": 0.955,
+      "recall": 0.9163,
+      "f1": 0.9563,
       "null_accuracy": 1.0,
-      "support": 267
+      "support": 263
     },
     "investment_objective": {
       "precision": 1.0,
-      "recall": 0.95,
-      "f1": 0.9744,
+      "recall": 0.93,
+      "f1": 0.9637,
       "null_accuracy": 1.0,
       "support": 300
     },
@@ -100,7 +100,7 @@
       "recall": 1.0,
       "f1": 1.0,
       "null_accuracy": 1.0,
-      "support": 232
+      "support": 226
     },
     "domicile": {
       "precision": 1.0,
@@ -114,63 +114,63 @@
       "recall": 1.0,
       "f1": 1.0,
       "null_accuracy": 1.0,
-      "support": 243
+      "support": 235
     },
     "scenarios.stress.value": {
-      "precision": 0.9893,
-      "recall": 0.9204,
-      "f1": 0.9536,
-      "null_accuracy": 0.9802,
-      "support": 201
+      "precision": 0.9769,
+      "recall": 0.9378,
+      "f1": 0.9569,
+      "null_accuracy": 0.9375,
+      "support": 225
     },
     "scenarios.stress.return_pct": {
       "precision": 1.0,
-      "recall": 0.9303,
-      "f1": 0.9639,
+      "recall": 0.96,
+      "f1": 0.9796,
       "null_accuracy": 1.0,
-      "support": 201
+      "support": 225
     },
     "scenarios.unfavourable.value": {
-      "precision": 1.0,
-      "recall": 0.8905,
-      "f1": 0.9421,
-      "null_accuracy": 1.0,
-      "support": 201
+      "precision": 0.99,
+      "recall": 0.8844,
+      "f1": 0.9343,
+      "null_accuracy": 0.974,
+      "support": 225
     },
     "scenarios.unfavourable.return_pct": {
       "precision": 1.0,
-      "recall": 0.8905,
-      "f1": 0.9421,
+      "recall": 0.8933,
+      "f1": 0.9437,
       "null_accuracy": 1.0,
-      "support": 201
+      "support": 225
     },
     "scenarios.moderate.value": {
-      "precision": 1.0,
-      "recall": 0.8856,
-      "f1": 0.9393,
-      "null_accuracy": 1.0,
-      "support": 201
+      "precision": 0.9854,
+      "recall": 0.8978,
+      "f1": 0.9395,
+      "null_accuracy": 0.9615,
+      "support": 225
     },
     "scenarios.moderate.return_pct": {
       "precision": 1.0,
-      "recall": 0.8856,
-      "f1": 0.9393,
+      "recall": 0.9111,
+      "f1": 0.9535,
       "null_accuracy": 1.0,
-      "support": 201
+      "support": 225
     },
     "scenarios.favourable.value": {
-      "precision": 1.0,
-      "recall": 0.9104,
-      "f1": 0.9531,
-      "null_accuracy": 1.0,
-      "support": 201
+      "precision": 0.9902,
+      "recall": 0.9022,
+      "f1": 0.9442,
+      "null_accuracy": 0.974,
+      "support": 225
     },
     "scenarios.favourable.return_pct": {
       "precision": 1.0,
-      "recall": 0.9104,
-      "f1": 0.9531,
+      "recall": 0.9111,
+      "f1": 0.9535,
       "null_accuracy": 1.0,
-      "support": 201
+      "support": 225
     }
   }
 }

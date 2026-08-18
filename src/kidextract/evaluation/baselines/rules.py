@@ -145,7 +145,7 @@ def _detect_objective(lines: list[str]) -> str | None:
 
 
 def _detect_prose_costs(text: str, found: dict) -> None:
-    connectors = r"(?:amount to|betragen|s'elevent a|bedragen)"
+    connectors = r"(?:amount to|betragen|s'[ée]l[èe]vent [àa]|bedragen)"
     for label, field in LABELS:
         if field not in PERCENT_TARGETS or field in found:
             continue

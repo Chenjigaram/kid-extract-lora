@@ -14,7 +14,7 @@ from ..corpus.noise import inject_noise
 from ..corpus.render import format_percent, render
 from ..schema import TEXT_FIELDS
 
-HELD_OUT_LAYOUTS = ("amsterdam-bullets", "institutional-bps", "reordered-kid")
+HELD_OUT_LAYOUTS = ("amsterdam-bullets", "institutional-bps", "paris-legacy", "frankfurt-retail")
 TRAINING_LAYOUTS = tuple(layout.name for layout in LAYOUTS if layout.name not in HELD_OUT_LAYOUTS)
 
 BPS_CAPABLE_FIELDS = ("ongoing_charges_pct", "transaction_costs_pct")

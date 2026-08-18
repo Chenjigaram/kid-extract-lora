@@ -46,7 +46,7 @@ on nothing.
 
 ## Evaluation
 
-Scored on `test_unseen_layout`, which combines three layouts held out of training with the
+Scored on `test_unseen_layout`, which combines four layouts held out of training with the
 reserved label vocabulary — wordings for every field that appear in no training document.
 This is deliberately the harder of the two test splits.
 
@@ -59,8 +59,8 @@ A hand-written multilingual regular expression extractor, given the training voc
 
 | Split | Micro F1 | Macro F1 | Exact match |
 | --- | --- | --- | --- |
-| `test_seen` | 0.978 | 0.975 | 0.650 |
-| `test_unseen_layout` | 0.683 | 0.486 | 0.000 |
+| `test_seen` | 0.978 | 0.976 | 0.633 |
+| `test_unseen_layout` | 0.645 | 0.516 | 0.000 |
 
 The collapse on unseen wordings is the gap this adapter is trained to close.
 

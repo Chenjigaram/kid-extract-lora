@@ -15,7 +15,7 @@ YEAR_WORD = {"en": "years", "de": "Jahre", "fr": "ans", "nl": "jaar"}
 COST_SENTENCE = {
     "en": "{label} amount to {value}.",
     "de": "{label} betragen {value}.",
-    "fr": "{label} s'elevent a {value}.",
+    "fr": "{label} s'élèvent à {value}.",
     "nl": "{label} bedragen {value}.",
 }
 
@@ -54,7 +54,7 @@ DISTRACTORS = {
         "In het verleden behaalde resultaten worden over 10 jaar getoond indien beschikbaar.",
         "De bewaarder brengt een vergoeding van maximaal 0,02% van het nettovermogen in rekening.",
         "Wisselen tussen aandelenklassen kan tot 1% kosten met zich meebrengen.",
-        "De belastingwetgeving van het vestigingsland kan uw persoonlijke situatie beinvloeden.",
+        "De belastingwetgeving van het vestigingsland kan uw persoonlijke situatie beïnvloeden.",
     ],
 }
 

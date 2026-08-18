@@ -102,3 +102,23 @@ def test_training_split_never_uses_reserved_wordings(splits):
     reserved = all_labels_for("ongoing", "held_out") | all_labels_for("isin", "held_out")
     for row in splits["train"]:
         assert not any(word in row["text"] for word in reserved)
+
+
+def test_held_out_layouts_cover_every_language():
+    from kidextract.corpus.layouts import HEADINGS, LAYOUTS_BY_NAME
+
+    languages = {LAYOUTS_BY_NAME[name].language for name in HELD_OUT_LAYOUTS}
+    assert languages == set(HEADINGS)
+
+
+def test_training_layouts_cover_every_language():
+    from kidextract.corpus.layouts import HEADINGS, LAYOUTS_BY_NAME
+
+    languages = {LAYOUTS_BY_NAME[name].language for name in TRAINING_LAYOUTS}
+    assert languages == set(HEADINGS)
+
+
+def test_both_document_types_appear_in_training():
+    from kidextract.corpus.layouts import LAYOUTS_BY_NAME
+
+    assert {LAYOUTS_BY_NAME[name].doc_type for name in TRAINING_LAYOUTS} == {"kid", "kiid"}
