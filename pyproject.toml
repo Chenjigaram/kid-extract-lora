@@ -26,6 +26,7 @@ pdf = ["pypdf>=4.2", "pdfplumber>=0.11"]
 plots = ["matplotlib>=3.8"]
 hub = ["huggingface-hub>=0.24"]
 dev = ["pytest>=8.0", "ruff>=0.6"]
+alignment = ["rashomon-align @ git+https://github.com/Chenjigaram/rashomon-align.git"]
 
 [project.scripts]
 kid-build = "kidextract.cli.build_dataset:main"

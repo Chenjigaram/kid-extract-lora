@@ -3,8 +3,10 @@ from __future__ import annotations
 from collections.abc import Callable
 from dataclasses import dataclass, field
 
+from rashomon_align import alignment as generic_alignment
+
 from ..evaluation.metrics import ALL_FIELDS
-from .agreement import field_matches
+from .agreement import field_matches, mean_field_agreement
 from .sampling import natural_documents, sample_documents, uniform_documents
 
 Extractor = Callable[[str], dict | None]
@@ -38,17 +40,21 @@ def alignment(
     if not documents:
         return Alignment(0, 1.0, 1.0, alpha)
     strict_hits = 0
-    field_total = 0.0
     disagreements = dict.fromkeys(fields, 0)
     for text in documents:
         matches = field_matches(extract_a(text), extract_b(text), fields)
         strict_hits += all(matches.values())
-        field_total += sum(matches.values()) / len(matches)
         for name, ok in matches.items():
             if not ok:
                 disagreements[name] += 1
     count = len(documents)
-    return Alignment(count, strict_hits / count, field_total / count, alpha, disagreements)
+    per_field = generic_alignment(
+        lambda texts: [extract_a(text) for text in texts],
+        lambda texts: [extract_b(text) for text in texts],
+        documents,
+        agree=lambda a, b: mean_field_agreement(a, b, fields),
+    )
+    return Alignment(count, strict_hits / count, per_field, alpha, disagreements)
 
 
 def distributional_alignment(a: Extractor, b: Extractor, count: int = 400, seed: int = 1) -> Alignment:
