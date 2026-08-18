@@ -4,7 +4,7 @@ DATA ?= data/processed
 SPLIT ?= $(DATA)/test_unseen_layout.jsonl
 ADAPTER ?= runs/smollm2-135m-r16/adapter
 
-.PHONY: install test lint data rules zero-shot few-shot finetuned train sweep report clean
+.PHONY: install test lint smoke data rules zero-shot few-shot finetuned train sweep plots report clean
 
 install:
 	uv venv --python 3.12 .venv
@@ -15,6 +15,10 @@ test:
 
 lint:
 	$(PYTHON) -m ruff check src tests
+
+smoke:
+	$(PYTHON) -m kidextract.cli.build_dataset --out /tmp/kid-smoke --train 60 --validation 20 --test 40
+	$(PYTHON) -m kidextract.cli.evaluate --split /tmp/kid-smoke/test_unseen_layout.jsonl --system rules --out /tmp/kid-smoke/reports
 
 data:
 	$(PYTHON) -m kidextract.cli.build_dataset --out $(DATA) --train 1500 --validation 300 --test 300
@@ -36,6 +40,9 @@ finetuned:
 
 sweep:
 	$(PYTHON) -m kidextract.cli.sweep --spec configs/sweep.yaml --threads $(THREADS) --skip-generation --table reports/SWEEP.md
+
+plots:
+	$(PYTHON) -m kidextract.cli.plot --results runs/sweep/results.json --out reports/figures
 
 report:
 	$(PYTHON) -m kidextract.cli.report --dir reports --out reports/RESULTS.md
