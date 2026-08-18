@@ -93,6 +93,21 @@ thing, and pretending otherwise would be dishonest.
 If you have a free Kaggle or Colab GPU, the same commands run there unchanged and roughly two
 orders of magnitude faster. Nothing in this repository requires one.
 
+### Sizing a run
+
+Wall clock is set by the number of training examples; quality is set by the number of weight
+updates. With `gradient_accumulation_steps: 4`, 1500 examples for one epoch is 375 updates and
+about six hours — an overnight job.
+
+A first run at 38 updates was measurably undertrained. Of four sampled documents one was
+correct, one stopped early with unbalanced JSON, and two generated to the token cap without
+ever closing the object. Raising the cap from 400 to 640 tokens changed nothing, which ruled
+out truncation and left undertraining as the cause. If you shorten a run, expect schema
+validity to be the first thing that suffers.
+
+Generation stops as soon as brace depth returns to zero, so a well-formed object costs only
+the tokens it needs and a runaway is bounded by the cap rather than always reaching it.
+
 ## What is measured
 
 - field-level precision, recall and F1 over 23 fields
@@ -131,10 +146,12 @@ uv pip install --python .venv/bin/python -e ".[dev,plots,hub]"
 python -m kidextract.cli.build_dataset --out data/processed --train 6000 --validation 500 --test 500
 python -m kidextract.cli.evaluate --split data/processed/test_unseen_layout.jsonl --system rules
 python -m kidextract.cli.train --config configs/base.yaml --threads 4
-python -m kidextract.cli.evaluate --split data/processed/test_unseen_layout.jsonl \
-    --system finetuned --adapter runs/smollm2-135m-r16/adapter
-python -m kidextract.cli.report --dir reports --out reports/RESULTS.md
+scripts/benchmark.sh
 ```
+
+`scripts/benchmark.sh` scores all four systems on the same split with the same document limit
+and writes `reports/RESULTS.md`. Running them by hand invites comparing a hundred-document
+baseline against a forty-document fine-tune.
 
 Grounding the generated funds in real data is optional. Download the Morningstar European
 funds dataset from Kaggle and pass `--reference-csv`; real names, ISINs, charges and risk
