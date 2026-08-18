@@ -31,18 +31,28 @@ training, and nothing proprietary or confidential was involved.
 
 | | |
 | --- | --- |
-| Base model | `HuggingFaceTB/SmolLM2-135M-Instruct` |
-| Method | LoRA (PEFT) via TRL `SFTTrainer` |
+| Base model | HuggingFaceTB/SmolLM2-135M-Instruct |
+| Method | LoRA (PEFT) via TRL SFTTrainer |
 | Trainable parameters | 4,884,480 of 139,399,488 (3.5%) |
-| Rank / alpha / dropout | see `configs/base.yaml` |
-| Target modules | `q_proj k_proj v_proj o_proj gate_proj up_proj down_proj` |
+| Rank / alpha / dropout | 16 / 32 / 0.05 |
+| Target modules | q_proj k_proj v_proj o_proj gate_proj up_proj down_proj |
 | Max sequence length | 1408 |
-| Loss | completion only; the prompt is masked |
+| Learning rate / schedule | 0.0002 / cosine |
+| Batch / accumulation | 1 / 4 |
+| Training examples / epochs | 1500 / 1 |
+| Optimiser steps | 375 |
+| Final train / eval loss | 0.0478 / 0.0057 |
+| Wall clock | 5.7 hours on 4 CPU threads |
 | Hardware | Intel i5-8365U, 4 cores, CPU only |
 
 Loss is computed on the JSON completion alone. The prompt contains a field specification that
 is byte-identical in every example, so training the model to reproduce it would spend capacity
 on nothing.
+
+An earlier run at 38 optimiser steps was measurably undertrained: it produced unbalanced JSON
+and runaway generation, and raising the token cap from 400 to 640 did not help. Gradient
+accumulation was halved from 8 to 4 to buy ten times the weight updates for the same wall
+clock. Anyone shortening this run should expect schema validity to degrade first.
 
 ## Evaluation
 
