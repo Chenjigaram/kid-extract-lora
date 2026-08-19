@@ -208,6 +208,72 @@ Rules run in 1 ms per document; the model takes 21 s on four CPU threads — abo
 expensive. Where a hand-written extractor covers your providers, it is unbeatable on cost. The
 model earns its keep exactly when a new provider appears and the regex silently returns nothing.
 
+## Hyperparameter sweep
+
+Seventeen configurations, one axis at a time against a fixed baseline, 200 training examples and
+50 optimiser steps each — about 15 hours on four CPU threads. Ranked by validation loss, then the
+five most informative adapters were scored by generation on 30 held-out documents.
+
+| Axis | Spread in eval loss | Verdict |
+| --- | --- | --- |
+| epochs 1 to 3 | 0.079 | largest effect, but it is simply more steps |
+| learning rate 5e-5 to 5e-4 | 0.295 | large, monotonic |
+| alpha 8 to 64 | 0.208 | large, monotonic |
+| target modules q,v to all seven | 0.186 | large, monotonic |
+| **rank 4 to 64** | **0.005** | **no detectable effect across 16x the parameters** |
+| dropout 0 to 0.1 | 0.003 | no detectable effect |
+
+### Coverage beats width
+
+The two ways to spend a parameter budget do not cost the same:
+
+| Configuration | Trainable parameters | Eval loss | Micro F1 |
+| --- | --- | --- | --- |
+| rank 4, **all seven modules** | **1.22 M** | 0.0994 | 0.252 |
+| rank 16, `q,k,v,o` only | 1.84 M | 0.2022 | - |
+| rank 16, `q,v` only | 0.92 M | 0.2896 | **0.007** |
+| rank 16, all seven (baseline) | 4.88 M | 0.1036 | 0.179 |
+
+Rank sets the width of the adapter bottleneck; target modules decide which parts of the network
+are adapted at all. Width does nothing here — rank 4 and rank 64 are indistinguishable across a
+16x parameter range. Coverage does almost everything, and the MLP projections are where it comes
+from.
+
+Attention-only LoRA, the configuration from the original paper, is the worst tested: 0.007 micro
+F1, **no valid JSON at all**, and half of every value it emitted absent from the source document.
+Adapting attention alone cannot learn this task.
+
+The practical result is that the smallest adapter is the right one — **rank 4 across all seven
+modules**, 1.22 M parameters and roughly 5 MB, matching the 19.5 M-parameter rank 64 configuration
+and beating the 4x larger baseline on real extraction.
+
+### Validation loss ranked the configurations correctly
+
+| Configuration | Eval loss | Micro F1 | Schema valid | Hallucination |
+| --- | --- | --- | --- | --- |
+| epochs=3 | 0.0241 | 0.800 | 0.90 | 0.028 |
+| alpha=64 | 0.0566 | 0.459 | 0.33 | 0.109 |
+| rank=4 | 0.0994 | 0.252 | 0.30 | 0.141 |
+| baseline | 0.1036 | 0.179 | 0.20 | 0.140 |
+| target modules q,v | 0.2896 | 0.007 | 0.00 | 0.500 |
+
+The two rankings agree on all five. Skipping generation during the sweep and ranking by loss was
+therefore sound for this task, which is worth knowing because generation costs eight hours across
+seventeen runs and loss costs nothing.
+
+### What the sweep cannot tell you
+
+Every configuration that raises effective learning within 50 steps wins monotonically — learning
+rate, alpha, and epochs are all the same lever. So the sweep ranks configurations by **how fast
+they learn**, not by how good they end up. `alpha=64` and `lr=5e-4` may well overshoot at full
+length.
+
+The structural findings are more trustworthy than the scaling ones. Rank not mattering, and
+coverage mattering a great deal, are properties of the task rather than of the budget.
+
+Single seed throughout, so only large gaps mean anything. The 0.005 spread across the rank axis is
+noise; the 0.186 across target modules is not.
+
 ## Running it
 
 ```bash
