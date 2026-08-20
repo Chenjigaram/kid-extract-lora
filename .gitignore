@@ -40,4 +40,4 @@ wandb/
 
 reports/figures/*.png
 !reports/figures/.gitkeep
-reports/*.predictions.jsonl
+reports/**/*.predictions.jsonl
