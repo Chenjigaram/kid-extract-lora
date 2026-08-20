@@ -337,6 +337,7 @@ footer p{max-width:74ch}
         <caption>Attention-only LoRA — the configuration from the original paper — produced no valid JSON at all and hallucinated half the values it emitted. Rank 4 across all seven modules uses a third fewer parameters than rank 16 on attention alone, for less than half the loss.</caption>
       </table>
     </div>
+    <p style="margin:22px 0 4px"><a href="posts/coverage-beats-width.md" style="font-weight:600">Read the write-up of this result &rarr;</a> &mdash; why coverage beats width, and what it does not show.</p>
     <div class="charts">
       <figure><img src="figures/sweep_lora_target_modules.png" alt="Bar chart: eval loss falls sharply as more module types are adapted"><figcaption>Coverage. Adding the MLP projections is what moves the number.</figcaption></figure>
       <figure><img src="figures/sweep_lora_r.png" alt="Bar chart: eval loss is flat across LoRA ranks 4 to 64"><figcaption>Width. Sixteen times the parameters, no detectable difference.</figcaption></figure>

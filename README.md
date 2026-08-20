@@ -232,6 +232,10 @@ five most informative adapters were scored by generation on 30 held-out document
 
 ### Coverage beats width
 
+Written up separately: [Where you attach a LoRA adapter matters more than how wide you make
+it](docs/posts/coverage-beats-width.md).
+
+
 The two ways to spend a parameter budget do not cost the same:
 
 | Configuration | Trainable parameters | Eval loss | Micro F1 |
