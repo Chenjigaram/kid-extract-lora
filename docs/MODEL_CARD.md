@@ -69,8 +69,8 @@ A hand-written multilingual regular expression extractor, given the training voc
 
 | Split | Micro F1 | Macro F1 | Exact match |
 | --- | --- | --- | --- |
-| `test_seen` | 0.978 | 0.976 | 0.633 |
-| `test_unseen_layout` | 0.645 | 0.516 | 0.000 |
+| `test_seen` | 0.983 | 0.982 | 0.720 |
+| `test_unseen_layout` | 0.643 | 0.514 | 0.000 |
 
 The collapse on unseen wordings is the gap this adapter is trained to close.
 

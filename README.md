@@ -40,25 +40,26 @@ should be believed.
 
 ## The part that makes the evaluation mean something
 
-A hand-written regular expression extractor scores **0.978 micro F1** on documents whose
+A hand-written regular expression extractor scores **0.983 micro F1** on documents whose
 layouts and label wordings it already knows. On generated data, rules are extremely strong,
 and a benchmark that only reported that number would be measuring template memorisation.
 
 Real providers do not agree on what to call a field. Ongoing charges appear as *ongoing
 costs*, *running costs*, *laufende Gebühren*, *frais courants*, *beheerkosten*. So each
 document samples its own label wording, and the pools are split: the last wording of every
-field is reserved and appears **only** in the evaluation split, alongside three layouts held
-out of training entirely.
+field is reserved and appears **only** in the evaluation split, alongside four layouts held
+out of training entirely, one per language.
 
 Against layouts and wordings it has never seen, the same rule extractor scores:
 
 | Split | Micro F1 | Macro F1 | Exact match |
 | --- | --- | --- | --- |
-| `test_seen` — known layouts and wordings | 0.978 | 0.976 | 0.633 |
-| `test_unseen_layout` — new layouts, new wordings | 0.645 | 0.516 | 0.000 |
+| `test_seen` — known layouts and wordings | 0.983 | 0.982 | 0.720 |
+| `test_unseen_layout` — new layouts, new wordings | 0.643 | 0.514 | 0.000 |
 
-Four layouts are held out, one per language, so the split tests generalisation to
-new layouts and wordings rather than to an unfamiliar language.
+Both rows are 50 documents, the same 50 every other system is scored on. Holding out one layout
+per language means the split tests generalisation to unfamiliar layouts and wordings rather than
+to an unfamiliar language.
 
 Every label-dependent field drops to zero. Only ISIN, the risk scale and the scenario table
 survive, because those are recoverable by shape rather than by name. That collapse is the
@@ -146,7 +147,7 @@ All systems scored on the same 50 documents, same code, same splits.
 | System | Micro F1 | Macro F1 | Exact | Schema valid | Hallucination | Latency |
 | --- | --- | --- | --- | --- | --- | --- |
 | **fine-tuned 135M** | **0.858** | **0.830** | 0.02 | 0.88 | 0.005 | 21.3 s |
-| rules | 0.644 | 0.514 | 0.00 | 1.00 | 0.000 | 0.001 s |
+| rules | 0.643 | 0.514 | 0.00 | 1.00 | 0.000 | 0.001 s |
 | few-shot 135M | 0.169 | 0.155 | 0.00 | 0.50 | 0.491 | 40.0 s |
 | zero-shot 135M | 0.000 | 0.000 | 0.00 | 0.00 | — | 28.1 s |
 
