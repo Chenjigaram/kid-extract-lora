@@ -4,6 +4,12 @@ Structured extraction from European fund disclosure documents — PRIIPs Key Inf
 Documents and UCITS Key Investor Information Documents — using a small language model
 fine-tuned with LoRA and run entirely on CPU.
 
+**[Results and side-by-side demo →](https://chenjigaram.github.io/kid-extract-lora/)** ·
+[Model](https://huggingface.co/chenjigaram/kid-extract-135m-lora) ·
+[Dataset](https://huggingface.co/datasets/chenjigaram/kid-extract-synthetic)
+
+[![kid-extract: 0.858 micro F1 fine-tuned, 0.643 regex baseline, 0.000 for the same model prompted](docs/og-card.png)](https://chenjigaram.github.io/kid-extract-lora/)
+
 ## Why fine-tune instead of retrieve
 
 Retrieval answers questions the model does not know the answer to. That is not the problem
