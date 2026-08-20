@@ -1,0 +1,238 @@
+[
+ {
+  "id": "test_unseen_layout-000000",
+  "layout": "amsterdam-bullets",
+  "language": "nl",
+  "doc_type": "kid",
+  "text": "ESSENTIELE-INFORMATIEDOCUMENT\n\nNordea Multi-Asset Balanced Fund PAcc USD \n\nDoel\nDit document geeft u belangrijke informatie over dit beleggingsproduct. Het is geen marketingmateriaal.\n\nFondscode | FR6933639535\nAanbieder | Nordea Investment Funds S.A.\nBasisvaluta | USD\n\nDoelstellingen \nDit Fonds wordt actief beheerd en belegt in aandelen, obligaties en geldmarktinstrumenten. Het Fonds wordt beheerd met 50% MSCI World / 50% Bloomberg Euro Aggregate als referentie-index. \nIndex | 50% MSCI World / 50% Bloomberg Euro Aggregate\n \nRisicoprofiel\nWij hebben dit product ingedeeld in risicoklasse 3 van 7.\n\nPrestatiescenario's\nWat u na kosten kunt terugkrijgen bij een inleg van 10.000 USD\nStressscenario                     4.075,27    -25,86 %\nOngunstig                         7.625,76     -8,64 %\nGematigd                         11.799,42      5,67 %\nGunstig                           17.551,83     20,63 %\n\nVergoedingen\n- Beheerkosten | 0,34 %\n- Handelskosten | 0,34 %\n- Resultaatvergoeding | 20,00 %\n \nBeleggingshorizon \nVoorgestelde beleggingsduur | 3 jaar\n\nAanvullende informatie \nDe bewaarder brengt een vergoeding van maximaal 0,02% van het nettovermogen in rekening.\nWisselen tussen aandelenklassen kan tot 1% kosten met zich meebrengen. \nIn het verleden behaalde resultaten worden over 10 jaar getoond indien beschikbaar.\nDe belastingwetgeving van het vestigingsland kan uw persoonlijke situatie beïnvloeden.",
+  "gold": {
+   "fund_name": "Nordea Multi-Asset Balanced Fund PAcc USD",
+   "isin": "FR6933639535",
+   "currency": "USD",
+   "sri": 3,
+   "srri": null,
+   "ongoing_charges_pct": 0.34,
+   "entry_charge_pct": null,
+   "exit_charge_pct": null,
+   "transaction_costs_pct": 0.34,
+   "performance_fee_pct": 20.0,
+   "recommended_holding_period_years": 3.0,
+   "investment_objective": "Dit Fonds wordt actief beheerd en belegt in aandelen, obligaties en geldmarktinstrumenten. Het Fonds wordt beheerd met 50% MSCI World / 50% Bloomberg Euro Aggregate als referentie-index.",
+   "benchmark": "50% MSCI World / 50% Bloomberg Euro Aggregate",
+   "domicile": null,
+   "management_company": "Nordea Investment Funds S.A.",
+   "scenarios": {
+    "stress": {
+     "value": 4075.27,
+     "return_pct": -25.86
+    },
+    "unfavourable": {
+     "value": 7625.76,
+     "return_pct": -8.64
+    },
+    "moderate": {
+     "value": 11799.42,
+     "return_pct": 5.67
+    },
+    "favourable": {
+     "value": 17551.83,
+     "return_pct": 20.63
+    }
+   }
+  },
+  "base": {
+   "raw": "{\n  \"fund_name\": \"ESSENTIELE-INFORMATIEDOCUMENT\",\n  \"isin\": \"Nordea Multi-Asset Balanced Fund PAcc USD\",\n  \"currency\": \"3-letter code\",\n  \"sri\": \"1\",\n  \"srri\": \"1\",\n  \"ongoing_charges_pct\": \"4.075\",\n  \"entry_charge_pct\": \"7.625\",\n  \"exit_charge_pct\": \"20.63\",\n  \"transaction_costs_pct\": \"5.67\",\n  \"performance_fee_pct\": \"5.67\",\n  \"recommended_holding_period_years\": \"50\",\n  \"investment_objective\": \"USD\",\n  \"benchmark\": \"USD\",\n  \"domicile\": \"US\",\n  \"management_company\": \"US\",\n  \"scenarios\": {\n    \"2018\": {\n      \"sri\": 1,\n      \"srri\": 1,\n      \"ongoing_charges_pct\": 4.075,\n      \"entry_charge_pct\": 7.625,\n      \"exit_charge_pct\": 7.625,\n      \"transaction_costs_pct\": 5.67,\n      \"performance_fee_pct\": 5.67,\n      \"recommended_holding_period_years\": 50,\n      \"investment_objective\": \"USD\",\n      \"benchmark\": \"USD\",\n      \"scenarios\": {\n        \"2018\": {\n          \"sri\": 1,\n          \"srri\": 1,\n          \"ongoing_charges_pct\": 4.075,\n          \"entry_charge_pct\": 7.6",
+   "parsed": null,
+   "valid_json": false,
+   "valid_schema": false,
+   "seconds": 55.8
+  },
+  "finetuned": {
+   "raw": "{\"fund_name\":\"Nordea Multi-Asset Balanced Fund PAcc USD\",\"isin\":\"FR6933639535\",\"currency\":\"USD\",\"sri\":3,\"srri\":null,\"ongoing_charges_pct\":20.0,\"entry_charge_pct\":0.34,\"exit_charge_pct\":0.34,\"transaction_costs_pct\":null,\"performance_fee_pct\":20.0,\"recommended_holding_period_years\":3.0,\"investment_objective\":\"Dit Fonds wordt actief beheerd en belegt in aandelen, obligaties en geldmarktinstrumenten.\",\"benchmark\":\"50% MSCI World / 50% Bloomberg Euro Aggregate\",\"domicile\":null,\"management_company\":\"Nordea Investment Funds S.A.\",\"scenarios\":{\"stress\":{\"value\":4075.27,\"return_pct\":-25.86},\"unfavourable\":{\"value\":7625.76,\"return_pct\":-8.64},\"moderate\":{\"value\":11799.42,\"return_pct\":5.67},\"favourable\":{\"value\":17551.83,\"return_pct\":20.63}}}",
+   "parsed": {
+    "fund_name": "Nordea Multi-Asset Balanced Fund PAcc USD",
+    "isin": "FR6933639535",
+    "currency": "USD",
+    "sri": 3,
+    "srri": null,
+    "ongoing_charges_pct": 20.0,
+    "entry_charge_pct": 0.34,
+    "exit_charge_pct": 0.34,
+    "transaction_costs_pct": null,
+    "performance_fee_pct": 20.0,
+    "recommended_holding_period_years": 3.0,
+    "investment_objective": "Dit Fonds wordt actief beheerd en belegt in aandelen, obligaties en geldmarktinstrumenten.",
+    "benchmark": "50% MSCI World / 50% Bloomberg Euro Aggregate",
+    "domicile": null,
+    "management_company": "Nordea Investment Funds S.A.",
+    "scenarios": {
+     "stress": {
+      "value": 4075.27,
+      "return_pct": -25.86
+     },
+     "unfavourable": {
+      "value": 7625.76,
+      "return_pct": -8.64
+     },
+     "moderate": {
+      "value": 11799.42,
+      "return_pct": 5.67
+     },
+     "favourable": {
+      "value": 17551.83,
+      "return_pct": 20.63
+     }
+    }
+   },
+   "valid_json": true,
+   "valid_schema": true,
+   "seconds": 31.2
+  }
+ },
+ {
+  "id": "test_unseen_layout-000001",
+  "layout": "institutional-bps",
+  "language": "en",
+  "doc_type": "kid",
+  "text": "KEY INFORMATION DOCUMENT\n\nNordea Multi-Asset Balanced Fund IInc CHF\n\nPURPOSE\nThis document provides you with key information about this investment product. It is not marketing material. \n\nIdentifier: DE3521619984 \nFund manager: Nordea Investment Funds S.A. \nFund currency: CHF\nRegistered in: Germany\n\nOBJECTIVES\nThis Fund is actively managed and invests across equities, bonds and money market instruments. Performance is compared against the 50% MSCI World / 50% Bloomberg Euro Aggregate.\nIndex: 50% MSCI World / 50% Bloomberg Euro Aggregate\n\nRISK PROFILE\nRisk profile: 3 / 7\n\nPERFORMANCE SCENARIOS\nWhat you might get back after costs on an investment of 10,000 CHF\nStress                             4,108.71     -25.66%\nUnfa-\nvourable                      7,763.22      -8.09% \nModerate                          11,828.10       5.76%\nFavourable                        17,484.06      20.47%\n\nWHAT WILL THIS INVESTMENT COST?\nInitial charge                          5.00%\nDeferred charge                        0.00%\nRunning costs                        170 bps\nTrading costs                         34 bps\n\nINVESTMENT HORIZON\nSuggested holding period: 3 years\n\n\nDocument produced on 02/10/2026\nFURTHER INFORMATION\nPast performance is shown for the last 10 years where available.\nTax legislation in the fund's home country may have an impact on your personal tax position.\nInvestors may switch between share classes subject to a charge of up to 1%.",
+  "gold": {
+   "fund_name": "Nordea Multi-Asset Balanced Fund IInc CHF",
+   "isin": "DE3521619984",
+   "currency": "CHF",
+   "sri": 3,
+   "srri": null,
+   "ongoing_charges_pct": 1.7,
+   "entry_charge_pct": 5.0,
+   "exit_charge_pct": 0.0,
+   "transaction_costs_pct": 0.34,
+   "performance_fee_pct": null,
+   "recommended_holding_period_years": 3.0,
+   "investment_objective": "This Fund is actively managed and invests across equities, bonds and money market instruments. Performance is compared against the 50% MSCI World / 50% Bloomberg Euro Aggregate.",
+   "benchmark": "50% MSCI World / 50% Bloomberg Euro Aggregate",
+   "domicile": "Germany",
+   "management_company": "Nordea Investment Funds S.A.",
+   "scenarios": {
+    "stress": {
+     "value": 4108.71,
+     "return_pct": -25.66
+    },
+    "unfavourable": {
+     "value": 7763.22,
+     "return_pct": -8.09
+    },
+    "moderate": {
+     "value": 11828.1,
+     "return_pct": 5.76
+    },
+    "favourable": {
+     "value": 17484.06,
+     "return_pct": 20.47
+    }
+   }
+  },
+  "base": {
+   "raw": "{\n  \"id\": \"DE3521619984\",\n  \"title\": \"Nordea Multi-Asset Balanced Fund IInc CHF\",\n  \"description\": \"Nordea Multi-Asset Balanced Fund IInc CHF\",\n  \"currency\": \"CHF\",\n  \"issuer\": \"Nordea Investment Funds S.A.\",\n  \"currency_code\": \"CHF\",\n  \"currency_name\": \"CHF\",\n  \"country\": \"Germany\",\n  \"country_code\": \"DE\",\n  \"country_name\": \"Germany\",\n  \"country_code\": \"FR\",\n  \"country_name\": \"FR\",\n  \"country_code\": \"IT\",\n  \"country_name\": \"IT\",\n  \"country_code\": \"NL\",\n  \"country_name\": \"NL\",\n  \"country_code\": \"US\",\n  \"country_name\": \"US\",\n  \"country_code\": \"UK\",\n  \"country_name\": \"UK\",\n  \"country_code\": \"FR\",\n  \"country_name\": \"FR\",\n  \"country_code\": \"IT\",\n  \"country_name\": \"IT\",\n  \"country_code\": \"NL\",\n  \"country_name\": \"NL\",\n  \"country_code\": \"US\",\n  \"country_name\": \"US\",\n  \"country_code\": \"UK\",\n  \"country_name\": \"UK\",\n  \"country_code\": \"FR\",\n  \"country_name\": \"FR\",\n  \"country_code\": \"IT\",\n  \"country_name\": \"IT\",\n  \"country_code\": \"NL\",\n  \"country_name\": \"NL\",\n  \"country_code\": \"US\",\n  \"country_name\": \"US\",\n  \"country_code\": \"UK\",\n  \"country_name\": \"UK\",\n  \"country_code\":",
+   "parsed": null,
+   "valid_json": false,
+   "valid_schema": false,
+   "seconds": 36.1
+  },
+  "finetuned": {
+   "raw": "{\"fund_name\":\"Nordea Multi-Asset Balanced Fund IInc CHF\",\"isin\":\"DE3521619984\",\"currency\":\"CHF\",\"sri\":3,\"srri\":null,\"ongoing_charges_pct\":17.0,\"entry_charge_pct\":5.0,\"exit_charge_pct\":0.0,\"transaction_costs_pct\":34.0,\"performance_fee_pct\":null,\"recommended_holding_period_years\":3.0,\"investment_objective\":\"This Fund is actively managed and invests across equities, bonds and money market instruments. Performance is compared against the 50% MSCI World / 50% Bloomberg Euro Aggregate.\",\"benchmark\":\"50% MSCI World / 50% Bloomberg Euro Aggregate\",\"domicile\":null,\"management_company\":\"Nordea Investment Funds S.A.\",\"scenarios\":{\"stress\":{\"value\":4108.71,\"return_pct\":-25.66},\"unfavourable\":{\"value\":7763.22,\"return_pct\":-8.09},\"moderate\":{\"value\":11828.1,\"return_pct\":5.76},\"favourable\":{\"value\":17484.06,\"return_pct\":20.47}}}",
+   "parsed": {
+    "fund_name": "Nordea Multi-Asset Balanced Fund IInc CHF",
+    "isin": "DE3521619984",
+    "currency": "CHF",
+    "sri": 3,
+    "srri": null,
+    "ongoing_charges_pct": 17.0,
+    "entry_charge_pct": 5.0,
+    "exit_charge_pct": 0.0,
+    "transaction_costs_pct": 34.0,
+    "performance_fee_pct": null,
+    "recommended_holding_period_years": 3.0,
+    "investment_objective": "This Fund is actively managed and invests across equities, bonds and money market instruments. Performance is compared against the 50% MSCI World / 50% Bloomberg Euro Aggregate.",
+    "benchmark": "50% MSCI World / 50% Bloomberg Euro Aggregate",
+    "domicile": null,
+    "management_company": "Nordea Investment Funds S.A.",
+    "scenarios": {
+     "stress": {
+      "value": 4108.71,
+      "return_pct": -25.66
+     },
+     "unfavourable": {
+      "value": 7763.22,
+      "return_pct": -8.09
+     },
+     "moderate": {
+      "value": 11828.1,
+      "return_pct": 5.76
+     },
+     "favourable": {
+      "value": 17484.06,
+      "return_pct": 20.47
+     }
+    }
+   },
+   "valid_json": true,
+   "valid_schema": true,
+   "seconds": 34.0
+  }
+ },
+ {
+  "id": "test_unseen_layout-000002",
+  "layout": "paris-legacy",
+  "language": "fr",
+  "doc_type": "kiid",
+  "text": "INFORMATIONS CLES POUR L'INVESTISSEUR\n\nDWS Euro Corporate Bond Fund AInc EUR\n\nCode valeur : NL0874900036\nPromoteur : DWS Investment S.A.\nDevise de référence : EUR\nEnregistré en : Netherlands\n\nOBJECTIFS\nLe Fonds cherche à surperformer son indice de référence en investissant dans des obligations investment grade émises par des sociétés de la zone euro.\nIndice : Bloomberg Euro Aggregate Corporate\n\nPROFIL DE RISQUE\nProfil de risque : 4 / 7\n\nCE QUE CET INVESTISSEMENT VOUS COÛTERA\nDroit d'entrée s'élèvent à 0,00 %. Charges courantes s'élèvent à 0,67 %.\n\nHORIZON D'INVESTISSEMENT\nDurée minimale recommandée : 4 ans\n\nINFORMATIONS COMPLÉMENTAIRES\n\nDWS Euro Corporate Bond Fund AInc EUR - Informations cles\nLes performances passées sont présentées sur 10 ans 1orsqu'elles sont disponibles.\nLa législation fiscale du pays de domiciliation peut avoir une incidence sur votre situation.",
+  "gold": {
+   "fund_name": "DWS Euro Corporate Bond Fund AInc EUR",
+   "isin": "NL0874900036",
+   "currency": "EUR",
+   "sri": null,
+   "srri": 4,
+   "ongoing_charges_pct": 0.67,
+   "entry_charge_pct": 0.0,
+   "exit_charge_pct": null,
+   "transaction_costs_pct": null,
+   "performance_fee_pct": null,
+   "recommended_holding_period_years": 4.0,
+   "investment_objective": "Le Fonds cherche à surperformer son indice de référence en investissant dans des obligations investment grade émises par des sociétés de la zone euro.",
+   "benchmark": "Bloomberg Euro Aggregate Corporate",
+   "domicile": "Netherlands",
+   "management_company": "DWS Investment S.A.",
+   "scenarios": null
+  },
+  "base": {
+   "raw": "{\n  \"fund_name\": \"INFORMATIONS CLES POUR L'INVESTISSEUR\",\n  \"isin\": \"NL0874900036\",\n  \"currency\": \"TRD\",\n  \"sri\": \"1\",\n  \"srri\": \"1\",\n  \"ongoing_charges_pct\": \"100\",\n  \"entry_charge_pct\": \"67\",\n  \"exit_charge_pct\": \"67\",\n  \"transaction_costs_pct\": \"100\",\n  \"performance_fee_pct\": \"100\",\n  \"recommended_holding_period_years\": \"10\",\n  \"investment_objective\": \"100\",\n  \"benchmark\": \"100\",\n  \"domicile\": \"1\",\n  \"management_company\": \"1\",\n  \"scenarios\": {\n    \"0\": \"0\",\n    \"1\": \"1\",\n    \"2\": \"2\",\n    \"3\": \"3\",\n    \"4\": \"4\",\n    \"5\": \"5\",\n    \"6\": \"6\",\n    \"7\": \"7\",\n    \"8\": \"8\",\n    \"9\": \"9\",\n    \"10\": \"10\",\n    \"11\": \"11\",\n    \"12\": \"12\",\n    \"13\": \"13\",\n    \"14\": \"14\",\n    \"15\": \"15\",\n    \"16\": \"16\",\n    \"17\": \"17\",\n    \"18\": \"18\",\n    \"19\": \"19\",\n    \"20\": \"20\",\n    \"21\": \"21\",\n    \"22\": \"22\",\n    \"23\": \"23\",\n    \"24\": \"24\",",
+   "parsed": null,
+   "valid_json": false,
+   "valid_schema": false,
+   "seconds": 40.5
+  },
+  "finetuned": {
+   "raw": "{\"fund_name\":\"DWS Euro Corporate Bond Fund AInc EUR\",\"isin\":\"NL0874900036\",\"currency\":\"EUR\",\"sri\":null,\"srri\":4,\"ongoing_charges_pct\":0.67,\"entry_charge_pct\":0.0,\"exit_charge_pct\":null,\"transaction_costs_pct\":null,\"performance_fee_pct\":null,\"recommended_holding_period_years\":4.0,\"investment_objective\":\"Le Fonds cherche à surperformer son indice de référence en investissant dans des obligations investment grade émises par des sociétés de la zone euro.\",\"benchmark\":\"Euro Aggregate Corporate\",\"domicile\":\"Netherlands\",\"management_company\":\"DWS Investment S.A.\",\"scenarios\":null}",
+   "parsed": {
+    "fund_name": "DWS Euro Corporate Bond Fund AInc EUR",
+    "isin": "NL0874900036",
+    "currency": "EUR",
+    "sri": null,
+    "srri": 4,
+    "ongoing_charges_pct": 0.67,
+    "entry_charge_pct": 0.0,
+    "exit_charge_pct": null,
+    "transaction_costs_pct": null,
+    "performance_fee_pct": null,
+    "recommended_holding_period_years": 4.0,
+    "investment_objective": "Le Fonds cherche à surperformer son indice de référence en investissant dans des obligations investment grade émises par des sociétés de la zone euro.",
+    "benchmark": "Euro Aggregate Corporate",
+    "domicile": "Netherlands",
+    "management_company": "DWS Investment S.A.",
+    "scenarios": null
+   },
+   "valid_json": true,
+   "valid_schema": true,
+   "seconds": 20.0
+  }
+ }
+]

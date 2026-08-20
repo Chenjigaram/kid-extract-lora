@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>kid-extract — Key Information Document</title>
+<meta name="description" content="A 135M model fine-tuned with LoRA to extract structured JSON from European fund disclosure documents. Trained and evaluated entirely on a laptop CPU.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+code{font-family:"IBM Plex Mono",monospace; font-size:.88em; background:var(--paper); padding:1px 5px; border-radius:2px}
+:root{
+  --ink:#0F1E33; --ink-soft:#43566F; --ink-faint:#7C8CA3;
+  --paper:#EDF0F4; --card:#FFFFFF; --rule:#C6D0DC; --rule-soft:#DFE5EC;
+  --sri-1:#1F8A4C; --sri-2:#4FA33F; --sri-3:#8FB531; --sri-4:#C9A227;
+  --sri-5:#DE8A1F; --sri-6:#D2601F; --sri-7:#C0392B;
+  --ok:#1F8A4C; --warn:#DE8A1F; --bad:#C0392B;
+  --shadow:0 1px 2px rgba(15,30,51,.06), 0 8px 24px rgba(15,30,51,.06);
+  --wrap:1120px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:"Source Sans 3",system-ui,sans-serif; font-size:17px; line-height:1.62;
+}
+.wrap{max-width:var(--wrap); margin:0 auto; padding:0 24px}
+a{color:inherit}
+a:focus-visible,button:focus-visible{outline:3px solid var(--sri-4); outline-offset:3px}
+
+.eyebrow{
+  font-family:Archivo,sans-serif; font-weight:700; font-size:.72rem;
+  letter-spacing:.19em; text-transform:uppercase; color:var(--ink-faint);
+}
+
+/* masthead */
+.masthead{border-bottom:2px solid var(--ink); background:var(--card)}
+.masthead .wrap{padding-top:34px; padding-bottom:30px}
+.masthead__grid{display:grid; grid-template-columns:minmax(0,1.55fr) minmax(0,1fr); gap:44px; align-items:start}
+.ident{border-top:2px solid var(--ink); padding-top:12px}
+.ident dl{margin:0; display:grid; grid-template-columns:auto 1fr; gap:0}
+.ident dt{
+  font-family:Archivo,sans-serif; font-weight:700; font-size:.64rem; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--ink-faint); padding:9px 18px 9px 0;
+  border-bottom:1px solid var(--rule-soft); white-space:nowrap;
+}
+.ident dd{
+  margin:0; font-family:"IBM Plex Mono",monospace; font-size:.82rem; text-align:right;
+  padding:9px 0; border-bottom:1px solid var(--rule-soft);
+}
+@media (max-width:860px){ .masthead__grid{grid-template-columns:1fr; gap:28px} .ident dd{text-align:left} }
+.masthead h1{
+  font-family:Archivo,sans-serif; font-weight:900; font-size:clamp(2.4rem,6vw,4.1rem);
+  letter-spacing:-.022em; line-height:1.02; margin:.28em 0 .1em;
+}
+.masthead .sub{font-size:1.14rem; color:var(--ink-soft); max-width:62ch; margin:0}
+.purpose{
+  margin-top:24px; padding:14px 18px; border-left:3px solid var(--ink);
+  background:var(--paper); font-size:.95rem; color:var(--ink-soft); max-width:70ch;
+}
+.purpose strong{font-family:Archivo,sans-serif; letter-spacing:.1em; text-transform:uppercase; font-size:.72rem; display:block; color:var(--ink); margin-bottom:3px}
+
+/* sections */
+.band{padding:64px 0; border-bottom:1px solid var(--rule-soft)}
+.band--card{background:var(--card)}
+.band > .wrap > .eyebrow{display:block; margin-bottom:6px}
+.band h2{
+  font-family:Archivo,sans-serif; font-weight:700; font-size:clamp(1.35rem,2.6vw,1.85rem);
+  letter-spacing:.02em; text-transform:uppercase; margin:0 0 20px; max-width:26ch;
+}
+.lede{font-size:1.1rem; color:var(--ink-soft); max-width:68ch; margin:0 0 26px}
+.band p{max-width:68ch}
+
+/* replay */
+.replay-head{display:flex; flex-wrap:wrap; gap:14px; align-items:center; justify-content:space-between; margin-bottom:16px}
+.btn{
+  font-family:Archivo,sans-serif; font-weight:700; font-size:.76rem; letter-spacing:.13em;
+  text-transform:uppercase; padding:11px 20px; border:2px solid var(--ink);
+  background:var(--ink); color:var(--card); cursor:pointer; border-radius:2px;
+}
+.btn:hover{background:transparent; color:var(--ink)}
+.picker{display:flex; gap:6px; flex-wrap:wrap}
+.picker button{
+  font-family:"IBM Plex Mono",monospace; font-size:.76rem; padding:8px 12px;
+  border:1px solid var(--rule); background:var(--card); color:var(--ink-soft);
+  cursor:pointer; border-radius:2px;
+}
+.picker button[aria-pressed="true"]{border-color:var(--ink); color:var(--ink); font-weight:600}
+
+.panes{display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px}
+.pane{background:var(--card); border:1px solid var(--rule); border-radius:3px; display:flex; flex-direction:column; min-height:420px}
+.pane__bar{
+  display:flex; align-items:center; justify-content:space-between; gap:8px;
+  padding:10px 13px; border-bottom:1px solid var(--rule-soft); background:var(--paper);
+}
+.pane__title{font-family:Archivo,sans-serif; font-weight:700; font-size:.7rem; letter-spacing:.13em; text-transform:uppercase}
+.pane__meta{font-family:"IBM Plex Mono",monospace; font-size:.7rem; color:var(--ink-faint)}
+.pane__body{
+  flex:1; padding:13px; overflow:auto; max-height:420px;
+  font-family:"IBM Plex Mono",monospace; font-size:.735rem; line-height:1.55;
+  white-space:pre-wrap; word-break:break-word;
+}
+.pane--source .pane__body{color:var(--ink-soft); font-size:.7rem}
+.pane--base{border-color:var(--bad)}
+.pane--base .pane__bar{background:#FBEDEC}
+.pane--tuned{border-color:var(--ok)}
+.pane--tuned .pane__bar{background:#EAF5EE}
+.verdict{
+  font-family:Archivo,sans-serif; font-weight:700; font-size:.66rem; letter-spacing:.1em;
+  text-transform:uppercase; padding:4px 9px; border-radius:2px; white-space:nowrap;
+}
+.verdict--bad{background:var(--bad); color:#fff}
+.verdict--ok{background:var(--ok); color:#fff}
+.verdict--idle{background:var(--rule); color:var(--ink-soft)}
+.caret{display:inline-block; width:7px; background:var(--ink); animation:blink 1s steps(1) infinite; color:transparent}
+@keyframes blink{50%{opacity:0}}
+
+/* tables */
+.table-scroll{overflow-x:auto; -webkit-overflow-scrolling:touch}
+table{border-collapse:collapse; width:100%; min-width:560px; font-size:.93rem}
+th,td{padding:11px 13px; text-align:left; border-bottom:1px solid var(--rule-soft)}
+th{
+  font-family:Archivo,sans-serif; font-weight:700; font-size:.68rem; letter-spacing:.11em;
+  text-transform:uppercase; color:var(--ink-faint); border-bottom:1.5px solid var(--rule);
+}
+td.num,th.num{text-align:right; font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums}
+tr.hero-row td{background:#F4F8F5; font-weight:600}
+tr.bad-row td{color:var(--bad)}
+caption{caption-side:bottom; padding-top:12px; font-size:.85rem; color:var(--ink-faint); text-align:left}
+
+/* SRI scale */
+.sri{margin:8px 0 26px}
+.sri__scale{display:flex; gap:5px; max-width:430px}
+.sri__cell{
+  flex:1; aspect-ratio:1/.82; display:grid; place-items:center; border-radius:2px;
+  font-family:"IBM Plex Mono",monospace; font-weight:600; color:#fff; font-size:.95rem; opacity:.28;
+}
+.sri__cell[data-on="1"]{opacity:1; outline:2.5px solid var(--ink); outline-offset:2px}
+.sri__labels{display:flex; justify-content:space-between; max-width:430px; margin-top:8px; font-size:.78rem; color:var(--ink-faint)}
+
+.risks{display:grid; grid-template-columns:repeat(auto-fit,minmax(255px,1fr)); gap:16px; margin-top:26px}
+.risk{background:var(--card); border:1px solid var(--rule); border-left:3px solid var(--warn); padding:16px 17px; border-radius:2px}
+.risk h3{font-family:Archivo,sans-serif; font-size:.78rem; letter-spacing:.1em; text-transform:uppercase; margin:0 0 7px}
+.risk p{font-size:.92rem; color:var(--ink-soft); margin:0}
+
+/* charts */
+.charts{display:grid; grid-template-columns:repeat(2,1fr); gap:18px; margin-top:8px}
+@media (max-width:760px){.charts{grid-template-columns:1fr}}
+figure{margin:0; background:var(--card); border:1px solid var(--rule); border-radius:3px; padding:13px}
+figure img{width:100%; height:auto; display:block}
+figcaption{font-size:.85rem; color:var(--ink-soft); margin-top:9px}
+
+.links{display:grid; grid-template-columns:repeat(auto-fit,minmax(235px,1fr)); gap:14px; margin-top:22px}
+.link-card{
+  display:block; background:var(--card); border:1px solid var(--rule); border-radius:3px;
+  padding:17px 18px; text-decoration:none; transition:border-color .15s, transform .15s;
+}
+.link-card:hover{border-color:var(--ink); transform:translateY(-2px)}
+.link-card .eyebrow{margin-bottom:5px}
+.link-card strong{display:block; font-size:1.02rem; font-family:Archivo,sans-serif}
+.link-card span{font-size:.88rem; color:var(--ink-soft)}
+
+footer{padding:40px 0 60px; font-size:.87rem; color:var(--ink-faint)}
+footer p{max-width:74ch}
+
+@media (max-width:900px){
+  .panes{grid-template-columns:1fr}
+  .pane{min-height:0}
+  .pane__body{max-height:270px}
+}
+@media (prefers-reduced-motion:reduce){
+  .caret{animation:none}
+  .link-card{transition:none}
+}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="masthead__grid">
+      <div>
+        <span class="eyebrow">Key Information Document</span>
+        <h1>kid&#8209;extract</h1>
+        <p class="sub">A 135-million-parameter model, fine-tuned with LoRA, that turns European fund disclosure documents into validated JSON. Trained and evaluated entirely on a 2019 laptop CPU.</p>
+        <div class="purpose">
+          <strong>Purpose</strong>
+          This document provides you with key information about this project. It is not marketing material. Every figure on this page was produced by the evaluation harness in the repository and can be reproduced from it.
+        </div>
+      </div>
+      <aside class="ident">
+        <dl>
+          <dt>Base model</dt><dd>SmolLM2-135M-Instruct</dd>
+          <dt>Method</dt><dd>LoRA · PEFT · TRL</dd>
+          <dt>Trainable</dt><dd>4.88 M / 139 M</dd>
+          <dt>Adapter</dt><dd>19.6 MB</dd>
+          <dt>Languages</dt><dd>EN · DE · FR · NL</dd>
+          <dt>Fields extracted</dt><dd>23</dd>
+          <dt>Licence</dt><dd>MIT</dd>
+        </dl>
+      </aside>
+    </div>
+  </div>
+</header>
+
+<section class="band band--card">
+  <div class="wrap">
+    <span class="eyebrow">The same model, twice</span>
+    <h2>One document, two outputs</h2>
+    <p class="lede">On the left, a generated fund document. In the middle, SmolLM2&#8209;135M prompted with the schema. On the right, the identical model after LoRA fine&#8209;tuning. Press replay to watch both generate, at eight times real speed.</p>
+    <p style="margin-bottom:22px">Watch what the prompted model does, not just whether it finishes. Depending on the document it invents keys the schema never mentions, repeats whole blocks until it runs out of tokens, or fills unrelated fields with the same value — a currency code arriving in <code>benchmark</code>, <code>domicile</code> and <code>management_company</code> alike. It has learned the shape of JSON and none of the task. That is why schema validity is 0.00 rather than merely low, and it is the behaviour fine‑tuning fixes.</p>
+
+    <div class="replay-head">
+      <div class="picker" id="picker" role="group" aria-label="Choose an example document"></div>
+      <button class="btn" id="replay" type="button">Replay</button>
+    </div>
+
+    <div class="panes">
+      <div class="pane pane--source">
+        <div class="pane__bar"><span class="pane__title">Input document</span><span class="pane__meta" id="src-meta">—</span></div>
+        <div class="pane__body" id="src-body"></div>
+      </div>
+      <div class="pane pane--base">
+        <div class="pane__bar"><span class="pane__title">Prompted</span><span class="verdict verdict--idle" id="base-verdict">Idle</span></div>
+        <div class="pane__body" id="base-body"></div>
+      </div>
+      <div class="pane pane--tuned">
+        <div class="pane__bar"><span class="pane__title">Fine&#8209;tuned</span><span class="verdict verdict--idle" id="tuned-verdict">Idle</span></div>
+        <div class="pane__body" id="tuned-body"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap">
+    <span class="eyebrow">Section I</span>
+    <h2>What is this product?</h2>
+    <p class="lede">Every investment product sold to retail investors in the EU must publish a Key Information Document. Distributors need the numbers inside them — risk indicator, ongoing charges, holding period — as structured data, across thousands of funds and dozens of providers who agree on almost nothing.</p>
+    <p>The document is already in the context window, so there is no knowledge gap for retrieval to fill. What goes wrong with a prompted small model is behaviour: it drifts on JSON structure, renames fields between documents, and guesses when a field is absent instead of returning null. Those are format problems, and supervised fine-tuning is what fixes them.</p>
+    <p>There is no public corpus of these documents — ESMA states no central European database exists — so the training set is generated: twelve provider layouts, four languages, both document families, with ground truth produced by the same code that renders the text.</p>
+  </div>
+</section>
+
+<section class="band band--card">
+  <div class="wrap">
+    <span class="eyebrow">Section II</span>
+    <h2>Performance scenarios</h2>
+    <p class="lede">All four systems scored by identical code on the same 50 documents, whose layouts <em>and</em> label wordings were held out of training entirely.</p>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>System</th><th class="num">Micro F1</th><th class="num">Exact</th><th class="num">Schema valid</th><th class="num">Hallucination</th><th class="num">Latency</th></tr></thead>
+        <tbody>
+          <tr class="hero-row"><td>Fine-tuned 135M</td><td class="num">0.858</td><td class="num">0.02</td><td class="num">0.88</td><td class="num">0.005</td><td class="num">21.3 s</td></tr>
+          <tr><td>Rules (regex)</td><td class="num">0.643</td><td class="num">0.00</td><td class="num">1.00</td><td class="num">0.000</td><td class="num">0.001 s</td></tr>
+          <tr><td>Few-shot 135M</td><td class="num">0.169</td><td class="num">0.00</td><td class="num">0.50</td><td class="num">0.491</td><td class="num">40.0 s</td></tr>
+          <tr class="bad-row"><td>Zero-shot 135M</td><td class="num">0.000</td><td class="num">0.00</td><td class="num">0.00</td><td class="num">—</td><td class="num">28.1 s</td></tr>
+        </tbody>
+        <caption>Unseen layouts and unseen label wordings. Zero-shot never produced a parseable object; few-shot invented half the values it emitted.</caption>
+      </table>
+    </div>
+    <p style="margin-top:26px">The regex baseline is the number worth dwelling on. On documents whose wording it already knows it scores <strong>0.978</strong> — better than the model, and twenty thousand times faster. It collapses to 0.643 the moment a provider uses an unfamiliar phrase for the same field, because every label-dependent field drops to exactly zero. That gap is what the fine-tune exists to close, and it is why the evaluation reserves label vocabulary rather than only holding out layouts.</p>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap">
+    <span class="eyebrow">Section III</span>
+    <h2>What are the risks?</h2>
+    <p class="lede">The risk indicator below is the one that appears in every real KID. Here it rates how far these results should be trusted outside the conditions they were measured in.</p>
+    <div class="sri">
+      <div class="sri__scale" role="img" aria-label="Risk indicator: 5 out of 7">
+        <div class="sri__cell" style="background:var(--sri-1)">1</div>
+        <div class="sri__cell" style="background:var(--sri-2)">2</div>
+        <div class="sri__cell" style="background:var(--sri-3)">3</div>
+        <div class="sri__cell" style="background:var(--sri-4)">4</div>
+        <div class="sri__cell" data-on="1" style="background:var(--sri-5)">5</div>
+        <div class="sri__cell" style="background:var(--sri-6)">6</div>
+        <div class="sri__cell" style="background:var(--sri-7)">7</div>
+      </div>
+      <div class="sri__labels"><span>Lower risk</span><span>Higher risk</span></div>
+    </div>
+    <div class="risks">
+      <div class="risk"><h3>Synthetic documents</h3><p>Every figure here is measured on generated text, which is more regular than real provider PDFs. Absolute scores should be assumed optimistic. A hand-labelled set of real documents is the outstanding work.</p></div>
+      <div class="risk"><h3>Exact match is 0.02</h3><p>Per-field accuracy of 0.858 is not whole-record accuracy. Getting all 23 fields right simultaneously is rare. Validate fields individually rather than trusting a record wholesale.</p></div>
+      <div class="risk"><h3>One output in eight is malformed</h3><p>Schema validity drops from 1.00 on familiar layouts to 0.88 on unfamiliar ones. A production pipeline needs a retry path.</p></div>
+      <div class="risk"><h3>Single seed throughout</h3><p>The ablation used one seed per configuration. Only large gaps are meaningful; small differences are noise and are reported as such.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="band band--card">
+  <div class="wrap">
+    <span class="eyebrow">Section IV</span>
+    <h2>What are the costs?</h2>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>Item</th><th class="num">Cost</th></tr></thead>
+        <tbody>
+          <tr><td>Training the published adapter</td><td class="num">5.7 hours, 4 CPU threads</td></tr>
+          <tr><td>Trainable parameters</td><td class="num">4.88 M of 139 M (3.5%)</td></tr>
+          <tr><td>Adapter on disk</td><td class="num">19.6 MB</td></tr>
+          <tr><td>Peak memory while training</td><td class="num">1.4 GB</td></tr>
+          <tr><td>Extraction, per document</td><td class="num">21 s on CPU</td></tr>
+          <tr><td>GPU hours</td><td class="num">0</td></tr>
+          <tr><td>Money spent</td><td class="num">0</td></tr>
+        </tbody>
+        <caption>Measured on an Intel i5-8365U, four cores, no CUDA. The same commands run unchanged on a free Kaggle GPU roughly two orders of magnitude faster.</caption>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap">
+    <span class="eyebrow">Section V</span>
+    <h2>Where the adapter should go</h2>
+    <p class="lede">Seventeen configurations, one axis at a time against a fixed baseline. The result contradicts the obvious intuition: how <em>wide</em> you make the adapter does not matter, but <em>which layers</em> you attach it to matters enormously.</p>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>Configuration</th><th class="num">Trainable</th><th class="num">Eval loss</th><th class="num">Micro F1</th></tr></thead>
+        <tbody>
+          <tr class="hero-row"><td>Rank 4, all seven modules</td><td class="num">1.22 M</td><td class="num">0.0994</td><td class="num">0.252</td></tr>
+          <tr><td>Rank 16, all seven modules</td><td class="num">4.88 M</td><td class="num">0.1036</td><td class="num">0.179</td></tr>
+          <tr><td>Rank 64, all seven modules</td><td class="num">19.54 M</td><td class="num">0.1037</td><td class="num">—</td></tr>
+          <tr><td>Rank 16, q k v o only</td><td class="num">1.84 M</td><td class="num">0.2022</td><td class="num">—</td></tr>
+          <tr class="bad-row"><td>Rank 16, q v only</td><td class="num">0.92 M</td><td class="num">0.2896</td><td class="num">0.007</td></tr>
+        </tbody>
+        <caption>Attention-only LoRA — the configuration from the original paper — produced no valid JSON at all and hallucinated half the values it emitted. Rank 4 across all seven modules uses a third fewer parameters than rank 16 on attention alone, for less than half the loss.</caption>
+      </table>
+    </div>
+    <div class="charts">
+      <figure><img src="figures/sweep_lora_target_modules.png" alt="Bar chart: eval loss falls sharply as more module types are adapted"><figcaption>Coverage. Adding the MLP projections is what moves the number.</figcaption></figure>
+      <figure><img src="figures/sweep_lora_r.png" alt="Bar chart: eval loss is flat across LoRA ranks 4 to 64"><figcaption>Width. Sixteen times the parameters, no detectable difference.</figcaption></figure>
+      <figure><img src="figures/sweep_lora_alpha.png" alt="Bar chart: eval loss falls monotonically as alpha rises"><figcaption>Alpha scales the update by alpha over rank — effectively a learning rate.</figcaption></figure>
+      <figure><img src="figures/sweep_size_vs_quality.png" alt="Scatter plot of adapter size against eval loss"><figcaption>Size against quality. Bigger is not better; better-placed is.</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section class="band band--card">
+  <div class="wrap">
+    <span class="eyebrow">Section VI</span>
+    <h2>Practical information</h2>
+    <div class="links">
+      <a class="link-card" href="https://github.com/Chenjigaram/kid-extract-lora"><span class="eyebrow">Repository</span><strong>kid-extract-lora</strong><span>Corpus generator, training, evaluation harness, ablation.</span></a>
+      <a class="link-card" href="https://huggingface.co/chenjigaram/kid-extract-135m-lora"><span class="eyebrow">Model</span><strong>kid-extract-135m-lora</strong><span>The LoRA adapter and its model card.</span></a>
+      <a class="link-card" href="https://huggingface.co/datasets/chenjigaram/kid-extract-synthetic"><span class="eyebrow">Dataset</span><strong>kid-extract-synthetic</strong><span>Four splits, with layouts and vocabulary held back.</span></a>
+      <a class="link-card" href="https://github.com/Chenjigaram/rashomon-align"><span class="eyebrow">Related</span><strong>rashomon-align</strong><span>Implementation of a July 2026 paper on model similarity, applied to these models.</span></a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Documents on this page are generated, not real disclosure documents from any provider. Nothing here is investment advice, and the extraction output is machine-readable rather than authoritative. Code and model released under the MIT licence.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const SPEED = 8;
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const el = id => document.getElementById(id);
+  const picker = el("picker");
+  let examples = [], current = 0, timers = [];
+
+  function stop(){ timers.forEach(clearTimeout); timers = []; }
+
+  function setVerdict(node, state, text){
+    node.className = "verdict verdict--" + state;
+    node.textContent = text;
+  }
+
+  function type(node, text, seconds, done){
+    if (reduce){ node.textContent = text; done(); return; }
+    const total = Math.max(1200, (seconds * 1000) / SPEED);
+    const steps = Math.min(text.length, 220);
+    const chunk = Math.ceil(text.length / steps);
+    let i = 0;
+    node.textContent = "";
+    const caret = document.createElement("span");
+    caret.className = "caret";
+    caret.textContent = " ";
+    node.appendChild(caret);
+    function tick(){
+      i = Math.min(text.length, i + chunk);
+      caret.remove();
+      node.textContent = text.slice(0, i);
+      if (i < text.length){
+        node.appendChild(caret);
+        node.scrollTop = node.scrollHeight;
+        timers.push(setTimeout(tick, total / steps));
+      } else { done(); }
+    }
+    timers.push(setTimeout(tick, total / steps));
+  }
+
+  function play(){
+    stop();
+    const ex = examples[current];
+    if (!ex) return;
+    el("src-meta").textContent = ex.layout + " · " + ex.language.toUpperCase();
+    el("src-body").textContent = ex.text;
+    setVerdict(el("base-verdict"), "idle", "Generating");
+    setVerdict(el("tuned-verdict"), "idle", "Generating");
+    type(el("base-body"), ex.base.raw, ex.base.seconds, function(){
+      const ok = ex.base.valid_schema;
+      setVerdict(el("base-verdict"), ok ? "ok" : "bad",
+        ok ? "Valid · " + ex.base.seconds + "s" : "No valid JSON · " + ex.base.seconds + "s");
+    });
+    type(el("tuned-body"), ex.finetuned.raw, ex.finetuned.seconds, function(){
+      const ok = ex.finetuned.valid_schema;
+      setVerdict(el("tuned-verdict"), ok ? "ok" : "bad",
+        ok ? "Valid JSON · " + ex.finetuned.seconds + "s" : "Invalid · " + ex.finetuned.seconds + "s");
+    });
+  }
+
+  function select(i){
+    current = i;
+    [...picker.children].forEach((b, n) => b.setAttribute("aria-pressed", String(n === i)));
+    play();
+  }
+
+  fetch("demo_examples.json")
+    .then(r => r.json())
+    .then(data => {
+      examples = data;
+      data.forEach((ex, i) => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.textContent = ex.language.toUpperCase() + " · " + ex.layout;
+        b.setAttribute("aria-pressed", String(i === 0));
+        b.addEventListener("click", () => select(i));
+        picker.appendChild(b);
+      });
+      select(0);
+    })
+    .catch(() => {
+      el("src-body").textContent = "Example outputs could not be loaded.";
+    });
+
+  el("replay").addEventListener("click", play);
+})();
+</script>
+</body>
+</html>

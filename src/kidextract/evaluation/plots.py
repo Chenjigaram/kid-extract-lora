@@ -34,9 +34,34 @@ def _metric(record: dict, metric: str) -> float | None:
     return float(value) if isinstance(value, (int, float)) else None
 
 
+def baseline_config(results_path: Path) -> dict:
+    summary = results_path.parent / "baseline" / "training_summary.json"
+    if not summary.exists():
+        return {}
+    config = json.loads(summary.read_text()).get("config", {})
+    flat = {}
+    for section, values in config.items():
+        if isinstance(values, dict):
+            for key, value in values.items():
+                flat[f"{section}.{key}"] = value
+    return flat
+
+
+def sort_key(record: dict, option: str, baseline: dict) -> float:
+    value = record.get("overrides", {}).get(option, baseline.get(option))
+    if isinstance(value, list):
+        return float(len(value))
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return float(record.get("trainable_parameters") or 0)
+
+
 def axis_value(record: dict, option: str, baseline_value: object) -> str:
     value = record.get("overrides", {}).get(option, baseline_value)
     if isinstance(value, list):
+        if len(value) >= 7:
+            return f"all {len(value)}"
         return "+".join(item.replace("_proj", "") for item in value)
     return str(value)
 
@@ -49,11 +74,13 @@ def plot_sweep(results_path: Path, output_dir: Path, metric: str = "eval_loss") 
 
     results = load_results(results_path)
     groups = group_by_axis(results)
+    baseline = baseline_config(results_path)
     output_dir.mkdir(parents=True, exist_ok=True)
     written: list[Path] = []
 
     for option, records in sorted(groups.items()):
-        points = [(axis_value(r, option, "baseline"), _metric(r, metric)) for r in records]
+        records = sorted(records, key=lambda r: sort_key(r, option, baseline))
+        points = [(axis_value(r, option, baseline.get(option, "baseline")), _metric(r, metric)) for r in records]
         points = [(label, value) for label, value in points if value is not None]
         if len(points) < 2:
             continue
@@ -83,8 +110,16 @@ def plot_sweep(results_path: Path, output_dir: Path, metric: str = "eval_loss") 
     if len(cost) >= 2:
         figure, axes = plt.subplots(figsize=(7, 4))
         axes.scatter([p / 1e6 for _n, p, _v in cost], [v for _n, _p, v in cost], color="#4C6EF5")
-        for name, params, value in cost:
-            axes.annotate(name, (params / 1e6, value), fontsize=7, alpha=0.7)
+        ordered = sorted(cost, key=lambda item: item[2])
+        for name, params, value in ordered[:2] + ordered[-2:]:
+            axes.annotate(
+                name,
+                (params / 1e6, value),
+                fontsize=8,
+                alpha=0.85,
+                xytext=(6, 4),
+                textcoords="offset points",
+            )
         axes.set_xlabel("Trainable parameters (millions)")
         axes.set_ylabel(metric.replace("_", " "))
         axes.set_title("Adapter size against quality")
